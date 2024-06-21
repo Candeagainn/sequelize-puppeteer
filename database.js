@@ -188,11 +188,19 @@ const Entrenador = sequelize.define('entrenador', {
             },
             id_jugador: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                references:{
+                    model: Jugador,
+                    key: 'id_jugador'
+                }
             },
             id_partido: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                references:{
+                    model: Partido,
+                    key: 'id_partido'
+                }
             }
         })
 
@@ -218,19 +226,35 @@ const Entrenador = sequelize.define('entrenador', {
             },
             id_jugador: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                references:{
+                    model: Jugador,
+                    key: 'id_jugador'
+                }
             },
             id_partido: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                references:{
+                    model: Partido,
+                    key: 'id_partido'
+            }
             },
             id_equipo: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                references:{
+                    model: Equipo,
+                    key: 'id_equipo'
+                }
             },
             id_jugador_asistente: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                references:{
+                    model: Jugador,
+                    key: 'id_jugador'
+            }
             }
         })
 
@@ -258,8 +282,22 @@ const Entrenador = sequelize.define('entrenador', {
                 }
             })
 
+
+Equipo.belongsTo(Entrenador, { foreignKey: 'id_entrenador' });
+Jugador.belongsTo(Equipo, { foreignKey: 'id_equipo' });
+Partido.belongsTo(Estadio, { foreignKey: 'id_estadio' });
+Partido.belongsTo(Equipo, { as: 'EquipoLocal', foreignKey: 'id_equipo_local' });
+Partido.belongsTo(Equipo, { as: 'EquipoVisitante', foreignKey: 'id_equipo_visitante' });
+Tarjeta.belongsTo(Jugador, { foreignKey: 'id_jugador' });
+Tarjeta.belongsTo(Partido, { foreignKey: 'id_partido' });
+Gol.belongsTo(Jugador, { foreignKey: 'id_jugador' });
+Gol.belongsTo(Partido, { foreignKey: 'id_partido' });
+Gol.belongsTo(Equipo, { foreignKey: 'id_equipo' });
+Gol.belongsTo(Jugador, { as: 'Asistente', foreignKey: 'id_jugador_asistente' });
+
+
             
-    entrenador.sync().then(() => {
+    sequelize.sync().then(() => {
         console.log('Se sincronizó la tabla')
     })
     .catch((err) => {
