@@ -25,9 +25,11 @@ The system manages data related to football teams, including coaches, players, s
 
 ## Technology Stack
 
-Node.js: JavaScript runtime for building the backend server.
-Sequelize ORM: For object-relational mapping to interact with the MySQL database.
-MySQL: Relational database management system to store and manage data.
+**Node.js:** JavaScript runtime for building the backend server.
+
+**Sequelize ORM:** For object-relational mapping to interact with the MySQL database.
+
+**MySQL:** Relational database management system to store and manage data.
 
 ## Setup Instructions
 1. **Clone the Repository:**
