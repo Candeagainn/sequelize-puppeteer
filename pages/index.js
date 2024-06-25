@@ -1,9 +1,13 @@
 import EstadioScraper from "./estadio.js";
+import JugadorScraper from "./jugador.js";
 
 async function main() {
-    const scraper = new EstadioScraper();
-    const stadiums = await scraper.scrapeStadiums();
-    console.log(stadiums);
+    // const stadiumScraper = new EstadioScraper();
+    // const stadiums = await stadiumScraper.scrapeStadiums();
+    // console.log(stadiums);
+    const playerScraper = new JugadorScraper();
+    const players = await playerScraper.scrapePlayers();
+    console.log(players);
 }
 
 main();
