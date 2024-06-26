@@ -11,6 +11,9 @@ class BaseScraper {
         this.browser = await puppeteer.launch({ headless: false });
         this.page = await this.browser.newPage();
     }
+    async newTab(){
+        await this.browser.newPage();
+    }
 
     async openWebPage(url) {
         await this.page.goto(url);
