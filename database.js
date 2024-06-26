@@ -74,6 +74,8 @@ const Entrenador = sequelize.define('entrenador', {
             // fecha_nacimiento DATE NOT NULL,
             // id_equipo INT NOT NULL,
             // FOREIGN KEY (id_equipo) REFERENCES Equipo(id_equipo)
+
+            //AGREGAR CAMPOS: APELLIDO, POSICION, FECHA DE NACIMIENTO Y NACIONALIDAD.   
             id_jugador: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
@@ -83,8 +85,20 @@ const Entrenador = sequelize.define('entrenador', {
                 type: Sequelize.STRING,
                 allowNull: false
             },
+            apellido:{
+                type: Sequelize.STRING,
+                allowNull: false
+            },
             fecha_nacimiento: {
                 type: Sequelize.DATE,
+                allowNull: false
+            },
+            nacionalidad: {
+                type: Sequelize.STRING,
+                allowNull: false
+            },
+            posicion: {
+                type: Sequelize.STRING,
                 allowNull: false
             },
             id_equipo: {
