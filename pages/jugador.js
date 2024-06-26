@@ -40,14 +40,20 @@ class JugadorScraper extends BaseScraper {
         const playersArray = [];
 
         const playerLinks = await this.getLinks(teamUrl);
-
-        for (const link of playerLinks) {
-            const playerInfo = await this.getPlayerInfo(`https://int.soccerway.com${link}`)
-            playersArray.push(playerInfo);
-            console.log(playerInfo);
-        } 
-        await this.close();
-        return playersArray;
+            for (const link of playerLinks) {
+                try {
+                const playerInfo = await this.getPlayerInfo(`https://int.soccerway.com${link}`)
+                    playersArray.push(playerInfo);
+                console.log(playerInfo);
+                }
+                catch (error) {
+                    
+                    console.log ('La página no pudo cargar la info del jugador' + link)
+                }  
+            } 
+            await this.close();
+            return playersArray;
+    
     } 
 
 }
