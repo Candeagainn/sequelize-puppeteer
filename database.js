@@ -24,7 +24,7 @@ const Entrenador = sequelize.define('entrenador', {
     // nombre VARCHAR(50) NOT NULL,
     // fecha_nacimiento DATE NOT NULL,
     // nacionalidad VARCHAR(50) NOT NULL
-    // AGREGAR APELLIDO
+    // apellido VARCHAR (50) NOT NULL
 
     id_entrenador: {
         type: Sequelize.INTEGER,
@@ -47,7 +47,8 @@ const Entrenador = sequelize.define('entrenador', {
         type: Sequelize.STRING,
         allowNull: false
     }
-})
+});
+ export { Entrenador };
 
     const Equipo = sequelize.define('equipo', {
 //         id_equipo INT PRIMARY KEY AUTO_INCREMENT,

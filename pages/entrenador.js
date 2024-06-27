@@ -6,14 +6,13 @@ class entrenadorScraper extends BaseScraper {
     }
 
 
-    async getLinks(teamUrl){
+    async getLink(teamUrl){
         await this.init();
         await this.openWebPage(teamUrl);
 
         const coachLink = await this.page.evaluate(() => {
-            const link = document.querySelector('#page_team_1_block_team_squad_7 > div > table:nth-child(3) > tbody > tr > td.name.large-link')
-            return link
-            
+            const link = document.querySelector('#page_team_1_block_team_squad_7 > div > table:nth-child(3) > tbody > tr > td.name.large-link > a')
+           return link.getAttribute('href');
     })
     console.log(coachLink);
     return coachLink;
@@ -37,4 +36,17 @@ class entrenadorScraper extends BaseScraper {
         return coachData;
     }
 
+    async scrapeAndSaveCoach(teamUrl){
+        const coachLink = await this.getLink(teamUrl);
+
+        try{
+            const coachInfo = await this.getCoachInfo(`https://int.soccerway.com${coachLink}`);
+            await this.close();
+            return coachInfo;
+        } catch (error){
+            console.log('La página no pudo cargar la info del entrenador' + coachLink)
+        }
+    }
+
 }
+export default entrenadorScraper;
