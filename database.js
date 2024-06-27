@@ -3,7 +3,12 @@ import { Sequelize } from 'sequelize';
 const sequelize = new Sequelize ('equipodefutbol', 'root', 'root', {
     dialect: 'mysql',
     host: 'localhost',
-    port: '3306'
+    port: '3306',
+    define: {
+        freezeTableName: true,
+        timestamps: false
+    }
+    
 })
 // Solo para probar que la conexión se haya establecido
 // sequelize.authenticate().then(()=>{
@@ -19,6 +24,7 @@ const Entrenador = sequelize.define('entrenador', {
     // nombre VARCHAR(50) NOT NULL,
     // fecha_nacimiento DATE NOT NULL,
     // nacionalidad VARCHAR(50) NOT NULL
+    // AGREGAR APELLIDO
 
     id_entrenador: {
         type: Sequelize.INTEGER,
@@ -26,6 +32,10 @@ const Entrenador = sequelize.define('entrenador', {
         autoIncrement: true
     },
     nombre: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    apellido: {
         type: Sequelize.STRING,
         allowNull: false
     },

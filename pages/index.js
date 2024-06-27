@@ -7,9 +7,9 @@ async function main() {
     // console.log(stadiums);
 const playerScraper = new JugadorScraper();
     // const players = await playerScraper.getLinks();
-    const playerInfo = await playerScraper.scrapeAndSavePlayers('https://int.soccerway.com/teams/england/norwich-city-fc/677/squad/')
+    const playerInfo = await playerScraper.scrapeAndSavePlayers('https://int.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/squad/')
     console.log(playerInfo);
-
+    
 }
 
 main();
