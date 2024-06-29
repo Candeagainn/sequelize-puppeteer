@@ -10,7 +10,7 @@ class equipoScraper extends BaseScraper{
         await this.openWebPage(Url)
         const equipoInfo = await this.page.evaluate(() => {
             const nombre = document.querySelector('#subheading > h1').innerText;
-            const ciudad = document.querySelector();
+            const ciudad = document.querySelector('.details > dd:nth-child(4)');
         })
     }
 }
