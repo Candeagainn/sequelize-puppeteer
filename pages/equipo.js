@@ -12,11 +12,6 @@ class equipoScraper extends BaseScraper{
             const nombre = document.querySelector('#subheading > h1').innerText;
             const ciudad = document.querySelector('.details > dd:nth-child(4)');
 
-  
-
-
-            
-
         })
     }
 
