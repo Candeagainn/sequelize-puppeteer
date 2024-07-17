@@ -71,13 +71,14 @@ const Entrenador = sequelize.define('entrenador', {
         },
         id_entrenador: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references:{
                 model: Entrenador,
                 key: 'id_entrenador'
             }
         }
-    })
+    }); 
+    export { Equipo };
 
         const Jugador = sequelize.define('jugador', {
             // id_jugador INT PRIMARY KEY AUTO_INCREMENT,
