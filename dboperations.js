@@ -30,4 +30,4 @@ async function insertTeamData(nombre, ciudad){
 async function insertPlayerData(){
     
 }
-export {insertCoachData}
+export {insertCoachData, insertTeamData}

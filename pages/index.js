@@ -3,7 +3,7 @@ import JugadorScraper from "./jugador.js";
 import EntrenadorScraper from "./entrenador.js";
 import equipoScraper from "./equipo.js";
 
-import { insertCoachData } from "../dboperations.js";
+import { insertCoachData, insertTeamData } from "../dboperations.js";
 
 async function main() {
     // const stadiumScraper = new EstadioScraper();
@@ -24,9 +24,16 @@ async function main() {
 //         await insertCoachData(coachInfo.name, coachInfo.lastName, coachInfo.dateOfBirth, coachInfo.nationality);  
 //     }  
 
-// }
+// /// Obtención y guardado de datos de la tabla equipo
     const teamsSCraper = new equipoScraper;
-
+    const teamLinks = await teamsSCraper.scrapeAndSaveTeams('https://int.soccerway.com/national/argentina/primera-division/2024/2nd-phase/r80132/tables/')
+    console.log(teamLinks); 
+        if (teamLinks) {
+            for (const team of teamLinks) {
+                await insertTeamData(team.nombre, team.ciudad);
+            }
+        }
+}
 
 main();
 console.log('otra cosa')
