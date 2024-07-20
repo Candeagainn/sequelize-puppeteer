@@ -19,15 +19,13 @@ async function insertTeamData(nombre, ciudad){
         try {
             const equipo = await Equipo.create({
                 nombre, 
-                ciudad
+                ciudad,
+                id_entrenador: null
             })
             console.log("se insertó el registro del equipo", equipo.toJSON());
         } catch (error){
             console.log('No se pudo insertar el registro del equipo', error);
         }
 }
-
-async function insertPlayerData(){
     
-}
 export {insertCoachData, insertTeamData}

@@ -25,7 +25,6 @@ const Entrenador = sequelize.define('entrenador', {
     // fecha_nacimiento DATE NOT NULL,
     // nacionalidad VARCHAR(50) NOT NULL
     // apellido VARCHAR (50) NOT NULL
-
     id_entrenador: {
         type: Sequelize.INTEGER,
         primaryKey: true,
