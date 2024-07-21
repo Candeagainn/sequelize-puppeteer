@@ -39,7 +39,7 @@ async function insertPlayerData(nombre, apellido, fechaNacimiento, nacionalidad,
             nacionalidad,
             posicion,
             id_equipo: async function(equipo){
-                const equipo = await Equipo.findOne({
+                const equipoNombre = await Equipo.findOne({
                     where:{nombre: equipo }
                 })
             }

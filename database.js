@@ -120,7 +120,8 @@ const Entrenador = sequelize.define('entrenador', {
                     key: 'id_equipo'
                 }
             }
-        })
+        });
+        export {Jugador};
 
         const Estadio = sequelize.define('estadio', {
             // id_estadio INT PRIMARY KEY AUTO_INCREMENT,

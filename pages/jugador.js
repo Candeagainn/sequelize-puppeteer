@@ -51,7 +51,7 @@ class JugadorScraper extends BaseScraper {
                 try {
                 const playerInfo = await this.getPlayerInfo(`https://int.soccerway.com${link}`)
                     playersArray.push({playerInfo, teamName});
-                console.log(playerInfo);
+                console.log(playerInfo, teamName);
                 }
                 catch (error) {
                     
