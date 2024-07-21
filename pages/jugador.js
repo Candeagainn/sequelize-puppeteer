@@ -8,6 +8,11 @@ class JugadorScraper extends BaseScraper {
     async getLinks(teamUrl){
         await this.init();
         await this.openWebPage(teamUrl);
+        
+        const teamName = await this.page.evaluate(() => {
+            const name = document.querySelector('#subheading > h1').innerText;
+            return name;
+        })
 
         const playerLinks = await this.page.evaluate(() => {
             const links = document.querySelectorAll('.name.large-link a')
@@ -15,7 +20,7 @@ class JugadorScraper extends BaseScraper {
             
     })
     console.log(playerLinks);
-    return playerLinks;
+    return {teamName, playerLinks};
 }
 
     async getPlayerInfo(playerUrl){
@@ -23,14 +28,16 @@ class JugadorScraper extends BaseScraper {
         const playerData = await this.page.evaluate(()=>{
             const name = document.querySelector('[data-first_name]').innerText;
             const lastName = document.querySelector('[data-last_name]').innerText;
-            const dateOfBirth = document.querySelector('[data-date_of_birth]').innerText
-            const nationality = document.querySelector('[data-country_of_birth]').innerText
+            const dateOfBirth = document.querySelector('[data-date_of_birth]').innerText;
+            const nationality = document.querySelector('[data-country_of_birth]').innerText;
+            const position = document.querySelector('[data-position]').innerText;
 
             return{
                 name,
                 lastName,
                 dateOfBirth,
-                nationality
+                nationality,
+                position
             }
         });
         return playerData;
@@ -39,11 +46,11 @@ class JugadorScraper extends BaseScraper {
     async scrapeAndSavePlayers(teamUrl){
         const playersArray = [];
 
-        const playerLinks = await this.getLinks(teamUrl);
+        const {teamName, playerLinks} = await this.getLinks(teamUrl);
             for (const link of playerLinks) {
                 try {
                 const playerInfo = await this.getPlayerInfo(`https://int.soccerway.com${link}`)
-                    playersArray.push(playerInfo);
+                    playersArray.push({playerInfo, teamName});
                 console.log(playerInfo);
                 }
                 catch (error) {

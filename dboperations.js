@@ -1,4 +1,4 @@
-import { Entrenador, Equipo } from "./database.js";
+import { Entrenador, Equipo, Jugador } from "./database.js";
 
 async function insertCoachData(nombre, apellido, fechaNacimiento, nacionalidad){
     
@@ -27,5 +27,27 @@ async function insertTeamData(nombre, ciudad){
             console.log('No se pudo insertar el registro del equipo', error);
         }
 }
+
+
     
+async function insertPlayerData(nombre, apellido, fechaNacimiento, nacionalidad, posicion){
+    try {
+        const jugador = await Jugador.create({
+            nombre,
+            apellido,
+            fecha_nacimiento: fechaNacimiento,
+            nacionalidad,
+            posicion,
+            id_equipo: async function(equipo){
+                const equipo = await Equipo.findOne({
+                    where:{nombre: equipo }
+                })
+            }
+        });
+        console.log('Se insertó el registro del jugador', jugador.toJSON());
+    } catch (error){
+        console.log('No se pudo insertar el registro del jugador', error);
+    }
+
+}
 export {insertCoachData, insertTeamData}
