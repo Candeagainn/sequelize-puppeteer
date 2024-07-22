@@ -146,6 +146,7 @@ const Entrenador = sequelize.define('entrenador', {
                 allowNull: false
             }
         })
+        export {Estadio};
 
         const Partido = sequelize.define('partido', {
             // id_partido INT PRIMARY KEY AUTO_INCREMENT,

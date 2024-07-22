@@ -19,14 +19,18 @@ class EstadioScraper extends BaseScraper {
         await this.openWebPage("https://int.soccerway.com/national/argentina/primera-division/2024/2nd-phase/r80132/venues/");
         const result = await this.page.evaluate(() => {
             const lista = document.querySelectorAll('.right');
-            const nombres = [...lista].map(e => e.querySelector('h4 > a').innerText);
-            const capacidad = [...lista].map(e => e.querySelector('.details > dd:nth-child(4)').innerText);
+            const estadios = [...lista].map(e => {
+                const nombre = e.querySelector('h4 > a').innerText;
+                const ciudad = e.querySelector('.details > dd:nth-child(2)').innerText;
+                const capacidad = e.querySelector('.details > dd:nth-child(4)').innerText;
 
-            return{
-            nombres,
-            capacidad
-            }
-
+                return {
+                    nombre,
+                    ciudad,
+                    capacidad
+                }
+            }) 
+            return estadios;
         });
         await this.close();
         return result;
@@ -34,4 +38,3 @@ class EstadioScraper extends BaseScraper {
 }
 
 export default EstadioScraper;
-    
