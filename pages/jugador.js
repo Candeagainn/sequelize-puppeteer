@@ -15,7 +15,7 @@ class JugadorScraper extends BaseScraper {
         })
 
         const playerLinks = await this.page.evaluate(() => {
-            const links = document.querySelectorAll('.name.large-link a')
+            const links = document.querySelectorAll('.table.squad.sortable > tbody > tr > td.name.large-link > a')
             return [...links].map(e => e.getAttribute('href'));
             
     })
