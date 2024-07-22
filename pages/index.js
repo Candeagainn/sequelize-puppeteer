@@ -46,7 +46,7 @@ async function main() {
     const stadiums = await stadiumScraper.scrapeStadiums();
     if (stadiums) {
         for (const stadium of stadiums) {
-            await insertVenueData (stadium.nombres, stadium.ciudad, stadium.capacidad);
+            await insertVenueData (stadium.nombre, stadium.ciudad, stadium.capacidad);
         }
     }
     }

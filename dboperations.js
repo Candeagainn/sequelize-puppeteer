@@ -1,13 +1,11 @@
-import { Entrenador, Equipo, Jugador } from "./database.js";
+import { Entrenador, Equipo, Jugador, Estadio } from "./database.js";
 
 async function insertCoachData(nombre, apellido, fechaNacimiento, nacionalidad){
     
         try{
             const entrenador = await Entrenador.findOrCreate({
-                nombre,
-                apellido,
-                fecha_nacimiento: fechaNacimiento,
-                nacionalidad
+                where: {nombre: nombre, apellido: apellido},
+                defaults: {fecha_nacimiento: fechaNacimiento, nacionalidad: nacionalidad}
             });
             console.log('Se insertó el registro del entrenador', entrenador.toJSON());
         } catch (error){
@@ -18,9 +16,9 @@ async function insertCoachData(nombre, apellido, fechaNacimiento, nacionalidad){
 async function insertTeamData(nombre, ciudad){
         try {
             const equipo = await Equipo.findOrCreate({
-                nombre, 
-                ciudad,
-                id_entrenador: null
+                where: {nombre: nombre},
+                defaults: {ciudad: ciudad, id_entrenador: null}
+
             })
             console.log("se insertó el registro del equipo", equipo.toJSON());
         } catch (error){
@@ -34,15 +32,12 @@ async function insertPlayerData(nombre, apellido, fechaNacimiento, nacionalidad,
 
     try {
         const buscarId = await Equipo.findOne({where:{nombre: nombreEquipo} })
-        const id_equipo = buscarId.id_equipo;
+        const idEquipo = buscarId.id_equipo;
 
         const jugador = await Jugador.findOrCreate({
-            nombre,
-            apellido,
-            fecha_nacimiento: fechaNacimiento,
-            nacionalidad,
-            posicion,
-            id_equipo
+            where: {nombre: nombre, apellido: apellido},
+            defaults: {fecha_nacimiento: fechaNacimiento, nacionalidad: nacionalidad, posicion: posicion, id_equipo: idEquipo}
+          
             })
             console.log('Se insertó el registro del jugador', jugador.toJSON());
         } catch (error){
@@ -52,12 +47,15 @@ async function insertPlayerData(nombre, apellido, fechaNacimiento, nacionalidad,
 
 async function insertVenueData(nombre, ciudad, capacidad){
     try {
-        const venue = await Estadio.findOrCreate({
-            nombre,
-            ciudad,
-            capacidad
-        })
-        console.log("se insertó el registro del estadio", venue.toJSON());
+        const [venue, created] = await Estadio.findOrCreate({
+            where: {nombre: nombre},
+            defaults: { ciudad: ciudad, capacidad: capacidad }
+        });
+        if (created){
+            console.log('Se insertó el registro del estadio', venue.toJSON());
+        } else {
+            console.log('El registro del estadio ya existe');
+        }
     } catch (error){
         console.log('No se pudo insertar el registro del estadio', error);
     }
