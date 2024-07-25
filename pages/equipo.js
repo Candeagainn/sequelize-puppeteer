@@ -1,6 +1,6 @@
 import BaseScraper from "../scraper.js";
 
-class equipoScraper extends BaseScraper{
+class EquipoScraper extends BaseScraper{
     constructor(){
         super();
     }
@@ -44,4 +44,4 @@ class equipoScraper extends BaseScraper{
     } 
 
 
-} export default equipoScraper;
+} export default EquipoScraper;

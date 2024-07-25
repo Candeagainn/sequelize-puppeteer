@@ -191,6 +191,7 @@ const Entrenador = sequelize.define('entrenador', {
                 }
             }
         })
+        export {Partido};
 
         const Tarjeta = sequelize.define('tarjeta', {
             // id_tarjeta INT PRIMARY KEY AUTO_INCREMENT,
