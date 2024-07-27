@@ -168,7 +168,7 @@ const Entrenador = sequelize.define('entrenador', {
             },
             id_estadio: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references:{
                     model: Estadio,
                     key: 'id_estadio'
@@ -176,7 +176,7 @@ const Entrenador = sequelize.define('entrenador', {
             },
             id_equipo_local: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references:{
                     model: Equipo,
                     key: 'id_equipo'
@@ -184,7 +184,7 @@ const Entrenador = sequelize.define('entrenador', {
             },
             id_equipo_visitante: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references:{
                     model: Equipo,
                     key: 'id_equipo'

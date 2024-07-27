@@ -66,17 +66,17 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante) {
         const buscarIdEstadio = await Estadio.findOne({
             where: { nombre: estadio } 
         })
-        const idEstadio = buscarIdEstadio.id_estadio;
+        const idEstadio = buscarIdEstadio.id_estadio? buscarIdEstadio.id_estadio : null;
 
         const buscarIdLocal = await Equipo.findOne({ 
             where: {nombre: teamLocal}
             })
-        const idLocal = buscarIdLocal.id_equipo;
+        const idLocal = buscarIdLocal.id_equipo? buscarIdLocal.id_equipo : null;
 
         const buscarIdVisitante = await Equipo.findOne({
             where: {nombre: teamVisitante}
         })
-        const idVisitante = buscarIdVisitante.id_equipo;
+        const idVisitante = buscarIdVisitante.id_equipo? buscarIdVisitante.id_equipo : null;
 
         const partido = await Partido.findOrCreate({
             where: { fecha: fecha },

@@ -8,13 +8,13 @@ class PartidoScraper extends BaseScraper {
     async getLinks(Url){
         await this.init();
         await this.openWebPage(Url)
-        const linksEquipos = await this.page.evaluate(()=>{
+        const linksPartidos = await this.page.evaluate(()=>{
             const links = document.querySelectorAll('.score-time.score > a')
             return [...links].map(e => e.getAttribute('href'));
             
         })
-        console.log(linksEquipos);
-        return linksEquipos;
+        console.log(linksPartidos);
+        return linksPartidos;
 
     }
 
@@ -23,7 +23,15 @@ class PartidoScraper extends BaseScraper {
         const matchInfo = await this.page.evaluate(()=>{
 
             let fecha = document.querySelector('.details > a:nth-child(1)').innerText;
-            fecha = fecha.split('-')
+
+            const fechaParts = fecha.split('/');
+
+            if (fechaParts.length === 3) {
+                const [dia, mes, an] = fechaParts;
+                fecha = `${an}-${mes}-${dia}`;
+            }
+
+            console.log('Fecha formateada:', fecha); // Depuración
 
             let nombreEstadio = document.querySelector('.details > span > a').innerText;
             nombreEstadio = nombreEstadio.replace(/\s*\(.*?\)\s*/g, '').trim();
@@ -32,7 +40,7 @@ class PartidoScraper extends BaseScraper {
             const imgVisitante = document.querySelector('.right > a > img');
 
             const nombreLocal = imgLocal ? imgLocal.alt : 'Equipo Local No Disponible';
-            const nombreVisitante = imgVisitante.alt
+            const nombreVisitante = imgVisitante? imgVisitante.alt : 'Equipo Visitante No Disponible';
 
             
             return{
