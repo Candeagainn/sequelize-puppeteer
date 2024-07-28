@@ -189,8 +189,25 @@ const Entrenador = sequelize.define('entrenador', {
                     model: Equipo,
                     key: 'id_equipo'
                 }
+            },
+            score_local:{
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: 0
+            },
+            score_visitante:{
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: 0
             }
-        })
+        }, {
+            indexes: [
+                {
+                    unique: true,
+                    fields: ['fecha', 'id_estadio', 'id_equipo_local', 'id_equipo_visitante']
+                }
+            ]
+        });
         export {Partido};
 
         const Tarjeta = sequelize.define('tarjeta', {
@@ -325,7 +342,7 @@ Gol.belongsTo(Jugador, { as: 'Asistente', foreignKey: 'id_jugador_asistente' });
 
 
             
-    sequelize.sync().then(() => {
+    sequelize.sync( {alter: true}).then(() => {
         console.log('Se sincronizó la tabla')
     })
     .catch((err) => {

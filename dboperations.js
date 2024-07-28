@@ -34,12 +34,16 @@ async function insertPlayerData(nombre, apellido, fechaNacimiento, nacionalidad,
         const buscarId = await Equipo.findOne({ where: { nombre: nombreEquipo } })
         const idEquipo = buscarId.id_equipo;
 
-        const jugador = await Jugador.findOrCreate({
+        const [jugador, created]= await Jugador.findOrCreate({
             where: { nombre: nombre, apellido: apellido },
             defaults: { fecha_nacimiento: fechaNacimiento, nacionalidad: nacionalidad, posicion: posicion, id_equipo: idEquipo }
 
-        })
+        });
+        if (created) {
         console.log('Se insertó el registro del jugador', jugador.toJSON());
+        } else {
+            console.log('El registro del jugador ya existe');
+        }
     } catch (error) {
         console.log('No se pudo insertar el registro del jugador', error);
     }
@@ -63,26 +67,38 @@ async function insertVenueData(nombre, ciudad, capacidad) {
 
 async function insertMatchData(fecha, estadio, teamLocal, teamVisitante) {
     try {
-        const buscarIdEstadio = await Estadio.findOne({
-            where: { nombre: estadio } 
-        })
-        const idEstadio = buscarIdEstadio.id_estadio? buscarIdEstadio.id_estadio : null;
+        let idEstadio = null;
+        let idLocal = null;
+        let idVisitante = null;
 
-        const buscarIdLocal = await Equipo.findOne({ 
-            where: {nombre: teamLocal}
-            })
-        const idLocal = buscarIdLocal.id_equipo? buscarIdLocal.id_equipo : null;
+        const buscarIdEstadio = await Estadio.findOne({ where: { nombre: estadio } })
+        if(buscarIdEstadio){
+        idEstadio = buscarIdEstadio.id_estadio
+    }
 
-        const buscarIdVisitante = await Equipo.findOne({
-            where: {nombre: teamVisitante}
-        })
-        const idVisitante = buscarIdVisitante.id_equipo? buscarIdVisitante.id_equipo : null;
+        const buscarIdLocal = await Equipo.findOne({ where: {nombre: teamLocal} })
+        if(buscarIdLocal){
+        idLocal = buscarIdLocal.id_equipo
+        }
 
-        const partido = await Partido.findOrCreate({
-            where: { fecha: fecha },
+        const buscarIdVisitante = await Equipo.findOne({ where: {nombre: teamVisitante} })
+        if(buscarIdVisitante){
+        idVisitante = buscarIdVisitante.id_equipo
+        }
+
+        const [partido, created] = await Partido.findOrCreate({
+             where: {
+                fecha: fecha,
+                id_estadio: idEstadio,
+                id_equipo_local: idLocal,
+                id_equipo_visitante: idVisitante
+            },
             defaults: { id_estadio: idEstadio, id_equipo_local: idLocal, id_equipo_visitante: idVisitante }
-        });
-        console.log('Se insertó el registro del partido', partido.toJSON());
+        }); if (created) {
+            console.log('Se insertó el registro del partido', partido.toJSON());
+        } else {
+            console.log('El registro del partido ya existe');
+        }
     } catch (error) {
         console.log('No se pudo insertar el registro del partido', error);
 

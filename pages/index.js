@@ -41,7 +41,7 @@ async function main() {
     //     }
     // }
 
-    // // Obtención y guardado de datos de la tabla estadio
+    // Obtención y guardado de datos de la tabla estadio
     // const stadiumScraper = new EstadioScraper();
     // const stadiums = await stadiumScraper.scrapeStadiums();
     // if (stadiums) {
@@ -50,7 +50,7 @@ async function main() {
     //     }
     // }
 
-    // Obtención y guardado de datos de la tabla partido
+    //Obtención y guardado de datos de la tabla partido
     const matchScraper = new PartidoScraper();
     const matches = await matchScraper.scrapeAndSaveMatches('https://el.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/matches/');
     console.log(matches)
