@@ -42,18 +42,14 @@ class PartidoScraper extends BaseScraper {
             const nombreLocal = imgLocal ? imgLocal.alt : 'Equipo Local No Disponible';
             const nombreVisitante = imgVisitante ? imgVisitante.alt : 'Equipo Visitante No Disponible';
 
-            // Selecciona el elemento con la clase 'bidi'
             const scoreElement = document.querySelector('.bidi');
 
-            // Inicializa las variables de los puntajes
             let localScore = 0;
             let visitanteScore = 0;
 
             if (scoreElement) {
-                // Obtiene el texto del marcador
                 const scoreText = scoreElement.textContent.trim();
 
-                // Divide el texto del marcador en los puntajes locales y visitantes
                 const scores = scoreText.split('-');
 
                 if (scores.length === 2) {
