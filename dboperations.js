@@ -65,7 +65,7 @@ async function insertVenueData(nombre, ciudad, capacidad) {
     }
 }
 
-async function insertMatchData(fecha, estadio, teamLocal, teamVisitante) {
+async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localScore, visitanteScore) {
     try {
         let idEstadio = null;
         let idLocal = null;
@@ -93,7 +93,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante) {
                 id_equipo_local: idLocal,
                 id_equipo_visitante: idVisitante
             },
-            defaults: { id_estadio: idEstadio, id_equipo_local: idLocal, id_equipo_visitante: idVisitante }
+            defaults: { id_estadio: idEstadio, id_equipo_local: idLocal, id_equipo_visitante: idVisitante, score_local: localScore, score_visitante: visitanteScore }
         }); if (created) {
             console.log('Se insertó el registro del partido', partido.toJSON());
         } else {

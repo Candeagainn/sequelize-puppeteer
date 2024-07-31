@@ -154,6 +154,8 @@ const Entrenador = sequelize.define('entrenador', {
             // id_estadio INT NOT NULL,
             // id_equipo_local INT NOT NULL,
             // id_equipo_visitante INT NOT NULL,
+            // score_local INT NOT NULL,
+            // score_visitante INT NOT NULL,
             // FOREIGN KEY (id_estadio) REFERENCES Estadio(id_estadio),
             // FOREIGN KEY (id_equipo_local) REFERENCES Equipo(id_equipo),
             // FOREIGN KEY (id_equipo_visitante) REFERENCES Equipo(id_equipo)

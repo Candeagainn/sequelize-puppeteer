@@ -1,26 +1,26 @@
 import BaseScraper from "../scraper.js";
 
 class PartidoScraper extends BaseScraper {
-    constructor(){
+    constructor() {
         super();
     }
 
-    async getLinks(Url){
+    async getLinks(Url) {
         await this.init();
         await this.openWebPage(Url)
-        const linksPartidos = await this.page.evaluate(()=>{
+        const linksPartidos = await this.page.evaluate(() => {
             const links = document.querySelectorAll('.score-time.score > a')
             return [...links].map(e => e.getAttribute('href'));
-            
+
         })
         console.log(linksPartidos);
         return linksPartidos;
 
     }
 
-    async getMatchInfo(Url){
+    async getMatchInfo(Url) {
         await this.page.goto(Url);
-        const matchInfo = await this.page.evaluate(()=>{
+        const matchInfo = await this.page.evaluate(() => {
 
             let fecha = document.querySelector('.details > a:nth-child(1)').innerText;
 
@@ -40,33 +40,54 @@ class PartidoScraper extends BaseScraper {
             const imgVisitante = document.querySelector('.right > a > img');
 
             const nombreLocal = imgLocal ? imgLocal.alt : 'Equipo Local No Disponible';
-            const nombreVisitante = imgVisitante? imgVisitante.alt : 'Equipo Visitante No Disponible';
+            const nombreVisitante = imgVisitante ? imgVisitante.alt : 'Equipo Visitante No Disponible';
 
-            
-            return{
-                fecha,
-                nombreEstadio,
-                nombreLocal,
-                nombreVisitante
+            // Selecciona el elemento con la clase 'bidi'
+            const scoreElement = document.querySelector('.bidi');
+
+            // Inicializa las variables de los puntajes
+            let localScore = 0;
+            let visitanteScore = 0;
+
+            if (scoreElement) {
+                // Obtiene el texto del marcador
+                const scoreText = scoreElement.textContent.trim();
+
+                // Divide el texto del marcador en los puntajes locales y visitantes
+                const scores = scoreText.split('-');
+
+                if (scores.length === 2) {
+                    // Extrae y convierte los puntajes a enteros
+                    localScore = parseInt(scores[0].trim(), 10);
+                    visitanteScore = parseInt(scores[1].trim(), 10);
+                }
             }
-        }); return matchInfo;
-    } 
+                    return {
+                        fecha,
+                        nombreEstadio,
+                        nombreLocal,
+                        nombreVisitante,
+                        localScore,
+                        visitanteScore
+                    }
+                }); return matchInfo;
+    }
 
-    async scrapeAndSaveMatches(Url){
+    async scrapeAndSaveMatches(Url) {
         const matchesArray = [];
         const linkList = await this.getLinks(Url);
         for (const link of linkList) {
-            try{ 
+            try {
                 const matchDetails = await this.getMatchInfo(`https://el.soccerway.com${link}`);
                 matchesArray.push(matchDetails);
                 console.log(matchDetails);
-            } catch(error){
+            } catch (error) {
                 console.log('La página del partido no pudo ser cargada', error)
             }
         }
-            await this.close();
-            return matchesArray;
-}
+        await this.close();
+        return matchesArray;
+    }
 
 }
- export default PartidoScraper;
+export default PartidoScraper;
