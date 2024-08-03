@@ -26,6 +26,7 @@ class EquipoScraper extends BaseScraper{
             }
         }); return teamData;
     }
+
     async scrapeAndSaveTeams(Url){
         const teamsArray = [];
         const linkList = await this.scrapeLinks(Url);

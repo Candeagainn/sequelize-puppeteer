@@ -69,6 +69,20 @@ class PartidoScraper extends BaseScraper {
                 }); return matchInfo;
     }
 
+
+    async getGoalsInfo(teamUrl){
+        const events = await this.page.evaluate(()=>{
+            const goalElements = document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
+            const events = []
+            eventElements.forEach(element =>{
+                const min = parseInt(element.nextElementSibling().innerText)
+                const scorer = element.innerText.trim('.')
+            }) 
+        })
+
+    }
+
+
     async scrapeAndSaveMatches(Url) {
         const matchesArray = [];
         const linkList = await this.getLinks(Url);

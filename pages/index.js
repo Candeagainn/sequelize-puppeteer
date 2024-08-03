@@ -54,12 +54,12 @@ async function main() {
     const matchScraper = new PartidoScraper();
     const matches = await matchScraper.scrapeAndSaveMatches('https://el.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/matches/');
     console.log(matches)
-    // if (matches) {
-    //     for (const match of matches) {
-    //         await insertMatchData(match.fecha, match.nombreEstadio, match.nombreLocal, match.nombreVisitante, match.localScore, match.visitanteScore);
-    //     }
+    if (matches) {
+        for (const match of matches) {
+            await insertMatchData(match.fecha, match.nombreEstadio, match.nombreLocal, match.nombreVisitante, match.localScore, match.visitanteScore);
+        }
     
-    // }
+    }
 }
 
 main();
