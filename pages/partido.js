@@ -69,7 +69,6 @@ class PartidoScraper extends BaseScraper {
                 }); return matchInfo;
     }
 
-
     async getGoalsInfo(teamUrl){
         const events = await this.page.evaluate(()=>{
             const goalElements = document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
@@ -77,6 +76,8 @@ class PartidoScraper extends BaseScraper {
             eventElements.forEach(element =>{
                 const min = parseInt(element.nextElementSibling().innerText)
                 const scorer = element.innerText.trim('.')
+                const assist_scorer = element.querySelector('.assist').innerText.trim('.')
+                // For the id_equipo we will use an element from another method in the class
             }) 
         })
 

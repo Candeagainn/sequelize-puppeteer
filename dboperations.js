@@ -104,5 +104,23 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
 
     }
 
+    async function getMatchId(fecha, nombreEstadio, nombreLocal, nombreVisitante) {
+        const nombreEstadio = await Estadio.findOne({ where: { nombre: nombreEstadio }.then(estadio => {estadio ? estadio.id_estadio : null})
+    });
+        const nombreLocal = await Equipo.findOne({ where: { nombre: nombreLocal }}).then(equipo => {equipo ? equipo.id_equipo : null})
+        const nombreVisitante = await Equipo.findOne({ where: { nombre: nombreVisitante }}).then(equipo => {equipo ? equipo.id_equipo : null})
+        
+        const partido = await Partido.findOne(
+            {
+                where: {
+                    fecha: fecha,
+                    id_estadio: nombreEstadio,
+                    id_equipo_local: nombreLocal,
+                    id_equipo_visitante: nombreVisitante
+                }
+            });
+            return partido ? partido.id_partido : null;
+    }
+
 }
-export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData }
+export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId }
