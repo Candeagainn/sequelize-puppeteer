@@ -103,15 +103,15 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
         console.log('No se pudo insertar el registro del partido', error);
 
     }
+}
 
-    async function getMatchId(fecha, nombreEstadio, nombreLocal, nombreVisitante) {
-        const nombreEstadio = await Estadio.findOne({ where: { nombre: nombreEstadio }.then(estadio => {estadio ? estadio.id_estadio : null})
-    });
-        const nombreLocal = await Equipo.findOne({ where: { nombre: nombreLocal }}).then(equipo => {equipo ? equipo.id_equipo : null})
-        const nombreVisitante = await Equipo.findOne({ where: { nombre: nombreVisitante }}).then(equipo => {equipo ? equipo.id_equipo : null})
+    async function getMatchId (fecha, nombreEstad, nombreL, nombreV) {
+        let nombreEstadio = await Estadio.findOne({ where: { nombre: nombreEstad }}).then((e)=> nombreEstadio = e.id_estadio)
+        let nombreLocal = await Equipo.findOne({ where: { nombre: nombreL }}).then((e)=> nombreLocal = e.id_equipo)
+        let nombreVisitante = await Equipo.findOne({ where: { nombre: nombreV }}).then((e)=> nombreVisitante = e.id_equipo)
         
-        const partido = await Partido.findOne(
-            {
+        let partido = await Partido.findOne(
+            { 
                 where: {
                     fecha: fecha,
                     id_estadio: nombreEstadio,
@@ -122,5 +122,4 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             return partido ? partido.id_partido : null;
     }
 
-}
 export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId }

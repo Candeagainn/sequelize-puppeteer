@@ -66,32 +66,43 @@ class PartidoScraper extends BaseScraper {
                         localScore,
                         visitanteScore
                     }
-                }); return matchInfo;
+            }); return matchInfo;
     }
 
-    async getGoalsInfo(teamUrl){
-        const events = await this.page.evaluate(()=>{
-            const goalElements = document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
-            const events = []
-            eventElements.forEach(element =>{
-                const min = parseInt(element.nextElementSibling().innerText)
+    async getGoalsInfo(){
+        const [events] = await this.page.evaluate(()=>{
+            const teamName = 'Belgrano'
+
+            let teamLocal = document.querySelector('.container.left > .team-title').innerText;
+            if (teamName == teamLocal.innerText) {
+                let goalElements = document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
+                let min = parseInt(document.querySelectorAll('.scorer-info > li > span:nth-child(1) > .minute').innerText)
+
+            } else {
+                let goalElements = document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
+                let min = parseInt(document.querySelectorAll('.scorer-info > li > span:nth-child(3) > .minute').innerText)
+            }
+            goalElements.forEach(element =>{
                 const scorer = element.innerText.trim('.')
                 const assist_scorer = element.querySelector('.assist').innerText.trim('.')
                 // For the id_equipo we will use an element from another method in the class
+                events.push({min, scorer, assist_scorer
+                })
             }) 
+            return events;
         })
-
-    }
-
-
+        return events;
+    }  
+    
     async scrapeAndSaveMatches(Url) {
         const matchesArray = [];
         const linkList = await this.getLinks(Url);
         for (const link of linkList) {
             try {
                 const matchDetails = await this.getMatchInfo(`https://el.soccerway.com${link}`);
-                matchesArray.push(matchDetails);
-                console.log(matchDetails);
+                const goalDetails = await this.getGoalsInfo();
+                matchesArray.push(matchDetails, goalDetails);
+                console.log(matchDetails, goalDetails.toJSON());
             } catch (error) {
                 console.log('La página del partido no pudo ser cargada', error)
             }
