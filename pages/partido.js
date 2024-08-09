@@ -58,51 +58,85 @@ class PartidoScraper extends BaseScraper {
                     visitanteScore = parseInt(scores[1].trim(), 10);
                 }
             }
-                    return {
-                        fecha,
-                        nombreEstadio,
-                        nombreLocal,
-                        nombreVisitante,
-                        localScore,
-                        visitanteScore
-                    }
-            }); return matchInfo;
-    }
+            let goals = [];
+            let goalElements = nombreLocal == 'CA Belgrano' 
+            ? document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
+            : document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
+        
+            let min = '';
+            let scorer = '';
+            let assist_scorer = '';
+                    goalElements.forEach(element => {
+                        
+                        try{
+                             min = (parseInt(element.closest('span').querySelector('.minute').innerText))
+                        } catch (error) { console.log('No se encontró info del minuto del gol') }
+                        try{
+                            scorer = element.innerText
+                        } catch (error) { console.log('No se encontró info del goleador') }
+                        try { 
+                            assist_scorer = element.querySelector('.assist').innerText
+                        } catch (error) { console.log('No se encontró info del asistente del gol') }
 
-    async getGoalsInfo(){
-        const [events] = await this.page.evaluate(()=>{
-            const teamName = 'Belgrano'
+                        goals.push({
+                            min, scorer, assist_scorer
+                        })
+                    })
 
-            let teamLocal = document.querySelector('.container.left > .team-title').innerText;
-            if (teamName == teamLocal.innerText) {
-                let goalElements = document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
-                let min = parseInt(document.querySelectorAll('.scorer-info > li > span:nth-child(1) > .minute').innerText)
-
-            } else {
-                let goalElements = document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
-                let min = parseInt(document.querySelectorAll('.scorer-info > li > span:nth-child(3) > .minute').innerText)
+            return {
+                fecha,
+                nombreEstadio,
+                nombreLocal,
+                nombreVisitante,
+                localScore,
+                visitanteScore,
+                goals
+                
             }
-            goalElements.forEach(element =>{
-                const scorer = element.innerText.trim('.')
-                const assist_scorer = element.querySelector('.assist').innerText.trim('.')
-                // For the id_equipo we will use an element from another method in the class
-                events.push({min, scorer, assist_scorer
-                })
-            }) 
-            return events;
-        })
-        return events;
-    }  
-    
+        }); return matchInfo;
+        }
+
+    // async getGoalsInfo() {
+    //     const events = await this.page.evaluate(() => {
+    //         const teamName = 'Belgrano'
+    //         const matchEvents = []
+
+    //         let teamLocal = document.querySelector('.container.left > .team-title').innerText;
+
+    //         const goalElements = teamName == teamLocal.innerText
+    //             ? document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
+    //             : document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
+
+    //         try {
+    //             goalElements.forEach(element => {
+    //                 const min = (parseInt(element.closest('span').querySelector('.minute').innerText))
+    //                 const scorer = element.innerText
+    //                 const assist_scorer = element.querySelector('.assist').innerText
+    //                 // For the id_equipo we will use an element from another method in the class
+    //                 matchEvents.push({
+    //                     min,
+    //                     scorer,
+    //                     assist_scorer
+    //                 })
+    //             })
+
+    //         } catch (error) {
+    //             console.log('No se encontró info de los goles')
+    //         }
+    //         return matchEvents;
+    //     });
+    //     return events;
+    // }
+
+
     async scrapeAndSaveMatches(Url) {
         const matchesArray = [];
         const linkList = await this.getLinks(Url);
         for (const link of linkList) {
             try {
                 const matchDetails = await this.getMatchInfo(`https://el.soccerway.com${link}`);
-                const goalDetails = await this.getGoalsInfo();
-                matchesArray.push(matchDetails, goalDetails);
-                console.log(matchDetails, goalDetails.toJSON());
+                matchesArray.push(matchDetails);
+                console.log(matchDetails);
             } catch (error) {
                 console.log('La página del partido no pudo ser cargada', error)
             }
