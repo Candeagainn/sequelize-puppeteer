@@ -83,6 +83,11 @@ class PartidoScraper extends BaseScraper {
                         })
                     })
 
+                    let cards = [];
+                    let cardElements = nombreLocal == 'CA Belgrano' 
+                    ? document.querySelectorAll('.container.left .playerstats .bookings > span')
+                    : document.querySelectorAll('.container.right .playerstats .bookings > span')
+
             return {
                 fecha,
                 nombreEstadio,
