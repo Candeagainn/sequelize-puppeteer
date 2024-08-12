@@ -59,34 +59,82 @@ class PartidoScraper extends BaseScraper {
                 }
             }
             let goals = [];
-            let goalElements = nombreLocal == 'CA Belgrano' 
-            ? document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
-            : document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
-        
-            let min = '';
+            let goalElements = nombreLocal == 'CA Belgrano'
+                ? document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
+                : document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
+
+            let minGol = '';
             let scorer = '';
             let assist_scorer = '';
-                    goalElements.forEach(element => {
-                        
-                        try{
-                             min = (parseInt(element.closest('span').querySelector('.minute').innerText))
-                        } catch (error) { console.log('No se encontró info del minuto del gol') }
-                        try{
-                            scorer = element.innerText
-                        } catch (error) { console.log('No se encontró info del goleador') }
-                        try { 
-                            assist_scorer = element.querySelector('.assist').innerText
-                        } catch (error) { console.log('No se encontró info del asistente del gol') }
 
-                        goals.push({
-                            min, scorer, assist_scorer
-                        })
-                    })
+            goalElements.forEach(element => {
 
-                    let cards = [];
-                    let cardElements = nombreLocal == 'CA Belgrano' 
-                    ? document.querySelectorAll('.container.left .playerstats .bookings > span')
-                    : document.querySelectorAll('.container.right .playerstats .bookings > span')
+                try {
+                    minGol = (parseInt(element.closest('span').querySelector('.minute').innerText))
+                } catch (error) { console.log('No se encontró info del minuto del gol') }
+                try {
+                    scorer = element.innerText
+                } catch (error) { console.log('No se encontró info del goleador') }
+                try {
+                    assist_scorer = element.querySelector('.assist').innerText
+                } catch (error) { console.log('No se encontró info del asistente del gol') }
+
+                goals.push({
+                    minGol, scorer, assist_scorer
+                })
+            })
+        
+
+
+
+            let cards = [];
+            let rows = nombreLocal == 'CA Belgrano'
+                ? document.querySelectorAll('.container.left .playerstats >tbody > tr')
+                : document.querySelectorAll('.container.right .playerstats >tbody > tr ')
+
+                console.log(`Encontradas ${rows.length} filas`); // Depuración: Número de filas encontradas
+
+
+                let playerName = '';
+
+            rows.forEach(row => {
+                let playerElement = row.querySelector('.player > a');
+                if (playerElement) {
+                    playerName = playerElement.innerText;
+                    console.log(`Jugador encontrado: ${playerName}`);
+
+                } else {
+                    console.log('No se encontró el elemento .player > a');
+                }
+
+                    let cardElement = row.querySelector('.bookings > span')
+
+                    if (cardElement) {
+                        let cardType = ''
+                        let minute = ''
+                        if (cardElement.querySelector('img[src="/media/v2.9.3/img/events/YC.png"]')) {
+                            cardType = 'Yellow';
+                        } else if (cardElement.querySelector('img[src="/media/v2.9.3/img/events/Y2C.png"]')) {
+                            cardType = 'Second Yellow';
+                        } else if (cardElement.querySelector('img[src="/media/v2.9.3/img/events/RC.png"]')) {
+                            cardType = 'Red';
+                        }
+                        if (cardType) {
+                            console.log(`Tarjeta encontrada: ${cardType}, Minuto: ${minute}`);
+
+                            minute = cardElement.textContent.trim(); 
+                            cards.push({
+                                playerName,
+                                cardType,
+                                minute: parseInt(minute, 10) || minute 
+                            });
+                        }
+                    } else {
+                        console.log('No se encontró el elemento .bookings span');
+                    }
+                    
+                })
+
 
             return {
                 fecha,
@@ -95,11 +143,12 @@ class PartidoScraper extends BaseScraper {
                 nombreVisitante,
                 localScore,
                 visitanteScore,
-                goals
-                
+                goals,
+                cards
+
             }
         }); return matchInfo;
-        }
+    }
 
     // async getGoalsInfo() {
     //     const events = await this.page.evaluate(() => {
