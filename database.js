@@ -201,7 +201,12 @@ const Entrenador = sequelize.define('entrenador', {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 defaultValue: 0
-            }
+            },
+        tipo_competicion:{
+            type: Sequelize.STRING,
+            allowNull: false,
+
+        }
         }, {
             indexes: [
                 {
@@ -305,29 +310,7 @@ const Entrenador = sequelize.define('entrenador', {
             }
         })
 
-            const Competicion = sequelize.define('competicion', {
-                // id_competicion INT PRIMARY KEY AUTO_INCREMENT,
-                // nombre VARCHAR(50) NOT NULL,
-                // pais VARCHAR(50) NOT NULL,
-                // tipo_competicion VARCHAR(50) NOT NULL
-                id_competicion: {
-                    type: Sequelize.INTEGER,
-                    primaryKey: true,
-                    autoIncrement: true
-                },
-                nombre: {
-                    type: Sequelize.STRING,
-                    allowNull: false
-                },
-                pais: {
-                    type: Sequelize.STRING,
-                    allowNull: false
-                },
-                tipo_competicion: {
-                    type: Sequelize.STRING,
-                    allowNull: false
-                }
-            })
+           
 
 
 Equipo.belongsTo(Entrenador, { foreignKey: 'id_entrenador' });
@@ -344,7 +327,7 @@ Gol.belongsTo(Jugador, { as: 'Asistente', foreignKey: 'id_jugador_asistente' });
 
 
             
-    sequelize.sync().then(() => {
+    sequelize.sync( {alter: true}).then(() => {
         console.log('Se sincronizó la tabla')
     })
     .catch((err) => {

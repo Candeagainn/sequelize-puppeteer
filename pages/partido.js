@@ -58,6 +58,10 @@ class PartidoScraper extends BaseScraper {
                     visitanteScore = parseInt(scores[1].trim(), 10);
                 }
             }
+
+            let competicion = document.querySelector('.details > a:nth-child(3)').innerText;
+
+
             let goals = [];
             let goalElements = nombreLocal == 'CA Belgrano'
                 ? document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
@@ -143,6 +147,7 @@ class PartidoScraper extends BaseScraper {
                 nombreVisitante,
                 localScore,
                 visitanteScore,
+                competicion,
                 goals,
                 cards
 
