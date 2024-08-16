@@ -254,7 +254,9 @@ const Entrenador = sequelize.define('entrenador', {
                     key: 'id_partido'
                 }
             }
-        })
+        });
+        export {Tarjeta};
+
 
         const Gol = sequelize.define('gol',{
             // id_gol INT PRIMARY KEY AUTO_INCREMENT,
@@ -308,7 +310,9 @@ const Entrenador = sequelize.define('entrenador', {
                     key: 'id_jugador'
             }
             }
-        })
+        });
+        export {Gol};
+
 
            
 

@@ -1,4 +1,4 @@
-import { Entrenador, Equipo, Jugador, Estadio, Partido } from "./database.js";
+import { Entrenador, Equipo, Jugador, Estadio, Partido, Tarjeta, Gol } from "./database.js";
 
 async function insertCoachData(nombre, apellido, fechaNacimiento, nacionalidad) {
 
@@ -65,7 +65,7 @@ async function insertVenueData(nombre, ciudad, capacidad) {
     }
 }
 
-async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localScore, visitanteScore) {
+async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localScore, visitanteScore, competicion) {
     try {
         let idEstadio = null;
         let idLocal = null;
@@ -91,7 +91,8 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 fecha: fecha,
                 id_estadio: idEstadio,
                 id_equipo_local: idLocal,
-                id_equipo_visitante: idVisitante
+                id_equipo_visitante: idVisitante,
+                tipo_competicion: competicion
             },
             defaults: { id_estadio: idEstadio, id_equipo_local: idLocal, id_equipo_visitante: idVisitante, score_local: localScore, score_visitante: visitanteScore }
         }); if (created) {
@@ -120,6 +121,22 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 }
             });
             return partido ? partido.id_partido : null;
+    }
+
+    async function insertGoalData (minuto, idJugador, idPartido, idEquipo, idJugadorAsistente) {
+        try {
+            const goal = await Gol.findOrCreate({
+                where: { minuto: minuto, id_jugador: idJugador, id_partido: idPartido, id_equipo: idEquipo, id_jugador_asistente: idJugadorAsistente }
+            });
+            } catch (error) {
+            console.log('No se pudo insertar el registro del gol', error);
+        }
+        // id_gol INT PRIMARY KEY AUTO_INCREMENT,
+            // minuto INT NOT NULL,
+            // id_jugador INT NOT NULL,
+            // id_partido INT NOT NULL,
+            // id_equipo INT NOT NULL,
+            // id_jugador_asistente INT NOT NULL,
     }
 
 export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId }
