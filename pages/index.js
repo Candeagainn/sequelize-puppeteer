@@ -58,7 +58,10 @@ async function main() {
         for (const match of matches) {
             await insertMatchData(match.fecha, match.nombreEstadio, match.nombreLocal, match.nombreVisitante, match.localScore, match.visitanteScore, match.competicion);
         }
-    
+       
+
+        
+
     }
 }
 

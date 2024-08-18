@@ -331,7 +331,7 @@ Gol.belongsTo(Jugador, { as: 'Asistente', foreignKey: 'id_jugador_asistente' });
 
 
             
-    sequelize.sync( {alter: true}).then(() => {
+    sequelize.sync().then(() => {
         console.log('Se sincronizó la tabla')
     })
     .catch((err) => {
