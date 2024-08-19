@@ -124,10 +124,25 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     }
 
     async function insertGoalData (minuto, idJugador, idPartido, idEquipo, idJugadorAsistente) {
+        let idTeam = '';
         try {
-            const goal = await Gol.findOrCreate({
-                where: { minuto: minuto, id_jugador: idJugador, id_partido: idPartido, id_equipo: idEquipo, id_jugador_asistente: idJugadorAsistente }
+            const buscarIdTeam = await Equipo.findOne({ where: {nombre: idEquipo} })
+            if(buscarIdLocal){
+            idTeam = buscarIdTeam.id_equipo
+
+            
+        }
+            const [goal, created] = await Gol.findOrCreate({
+                where: { 
+                    minuto: minuto, 
+                    id_jugador: idJugador, 
+                    id_partido: idPartido, 
+                    id_equipo: idTeam, 
+                    id_jugador_asistente: idJugadorAsistente }
             });
+                  if (created) {
+                console.log('Se insertó el registro del gol', goal.toJSON());
+                  }
             } catch (error) {
             console.log('No se pudo insertar el registro del gol', error);
         }

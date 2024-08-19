@@ -313,10 +313,6 @@ const Entrenador = sequelize.define('entrenador', {
         });
         export {Gol};
 
-
-           
-
-
 Equipo.belongsTo(Entrenador, { foreignKey: 'id_entrenador' });
 Jugador.belongsTo(Equipo, { foreignKey: 'id_equipo' });
 Partido.belongsTo(Estadio, { foreignKey: 'id_estadio' });
