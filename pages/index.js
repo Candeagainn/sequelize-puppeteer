@@ -57,28 +57,28 @@ async function main() {
     if (matches) {
         for (const match of matches) {
             // await insertMatchData(
-            //     match.fecha, 
-            //     match.nombreEstadio, 
-            //     match.nombreLocal, 
+            //     match.fecha,
+            //     match.nombreEstadio,
+            //     match.nombreLocal,
             //     match.nombreVisitante, 
             //     match.localScore, 
             //     match.visitanteScore, 
             //     match.competicion);
 
             let partidoId = await getMatchId(
-                match.fecha, 
-                match.nombreEstadio, 
-                match.nombreLocal, 
+                match.fecha,
+                match.nombreEstadio,
+                match.nombreLocal,
                 match.nombreVisitante);
 
                 if (partidoId) {
                     for (const goal of match.goals) {
                         await insertGoalData(
-                            goal.minGol,                 // Minuto del gol
-                            goal.scorer,                 // Nombre del jugador que anotó el gol
-                            partidoId,                   // ID del partido
-                            match.nombreLocal,           // Nombre del equipo que anotó
-                            goal.assist_scorer           // Nombre del jugador asistente (puede ser null)
+                            goal.minGol,
+                            goal.scorer,
+                            partidoId,
+                            match.nombreLocal,
+                            goal.assist_scorer
                         );
                     }
                 } else {
