@@ -124,14 +124,10 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     }
 
     async function insertGoalData (minuto, idJugador, idPartido, idEquipo, idJugadorAsistente) {
-        let idTeam = '';
+        let equipo = await Equipo.findOne({ where: { nombre: idEquipo }}).then((e)=> equipo = e.id_equipo)
+        let jugador = await Jugador.findOne({where: {nombre: idJugador}}).then((e) => jugador = e.id_jugador)
+        let jugadorAsistente = await Jugador.findOne({where: {nombre: idJugadorAsistente}}).then((e) => jugadorAsistente = e.id_jugador)
         try {
-            const buscarIdTeam = await Equipo.findOne({ where: {nombre: idEquipo} })
-            if(buscarIdLocal){
-            idTeam = buscarIdTeam.id_equipo
-
-            
-        }
             const [goal, created] = await Gol.findOrCreate({
                 where: { 
                     minuto: minuto, 
@@ -154,4 +150,4 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             // id_jugador_asistente INT NOT NULL,
     }
 
-export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId }
+export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId, insertGoalData}

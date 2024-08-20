@@ -71,13 +71,20 @@ async function main() {
                 match.nombreLocal, 
                 match.nombreVisitante);
 
-            await insertGoalData(match.goals.minGoal, partidoId, match.goals.scorer, match.goals.assist_scorer);
+                if (partidoId) {
+                    for (const goal of match.goals) {
+                        await insertGoalData(
+                            goal.minGol,                 // Minuto del gol
+                            goal.scorer,                 // Nombre del jugador que anotó el gol
+                            partidoId,                   // ID del partido
+                            match.nombreLocal,           // Nombre del equipo que anotó
+                            goal.assist_scorer           // Nombre del jugador asistente (puede ser null)
+                        );
+                    }
+                } else {
+                    console.log('No se encontró el ID del partido para:', match);
+                }
         }
-       
-    
-
-
-
     }
 }
 
