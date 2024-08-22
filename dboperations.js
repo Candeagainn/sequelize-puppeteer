@@ -107,7 +107,6 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
 }
 
     async function getMatchId (fecha, nombreEstad, nombreL, nombreV) {
-        let nombreEstadio = await Estadio.findOne({ where: { nombre: nombreEstad }}).then(e => e ? e.id_estadio : null);
         let nombreLocal = await Equipo.findOne({ where: { nombre: nombreL }}).then(e => e ? e.id_equipo : null);
         let nombreVisitante = await Equipo.findOne({ where: { nombre: nombreV }}).then(e => e ? e.id_equipo : null);
         
@@ -115,7 +114,6 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             { 
                 where: {
                     fecha: fecha,
-                    id_estadio: nombreEstadio,
                     id_equipo_local: nombreLocal,
                     id_equipo_visitante: nombreVisitante
                 }

@@ -56,36 +56,35 @@ async function main() {
     console.log(matches)
     if (matches) {
         for (const match of matches) {
-            // await insertMatchData(
-            //     match.fecha,
-            //     match.nombreEstadio,
-            //     match.nombreLocal,
-            //     match.nombreVisitante, 
-            //     match.localScore, 
-            //     match.visitanteScore, 
-            //     match.competicion);
-
-            let partidoId = await getMatchId(
+            await insertMatchData(
                 match.fecha,
                 match.nombreEstadio,
                 match.nombreLocal,
-                match.nombreVisitante);
+                match.nombreVisitante, 
+                match.localScore, 
+                match.visitanteScore, 
+                match.competicion);
+            }
+    //         let partidoId = await getMatchId(
+    //             match.fecha,
+    //             match.nombreLocal,
+    //             match.nombreVisitante);
 
-                if (partidoId) {
-                    for (const goal of match.goals) {
-                        await insertGoalData(
-                            goal.minGol,
-                            goal.scorer,
-                            partidoId,
-                            match.nombreLocal,
-                            goal.assist_scorer
-                        );
-                    }
-                } else {
-                    console.log('No se encontró el ID del partido para:', match);
-                }
-        }
-    }
+    //             if (partidoId) {
+    //                 for (const goal of match.goals) {
+    //                     await insertGoalData(
+    //                         goal.minGol,
+    //                         goal.scorer,
+    //                         partidoId,
+    //                         match.nombreLocal,
+    //                         goal.assist_scorer
+    //                     );
+    //                 }
+    //             } else {
+    //                 console.log('No se encontró el ID del partido');
+    //             }
+    //   }
+     }
 }
 
 main();
