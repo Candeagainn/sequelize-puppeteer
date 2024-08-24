@@ -106,16 +106,19 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     }
 }
 
-    async function getMatchId (fecha, nombreEstad, nombreL, nombreV) {
+    async function getMatchId (fecha, nombreL, nombreV) {
         let nombreLocal = await Equipo.findOne({ where: { nombre: nombreL }}).then(e => e ? e.id_equipo : null);
         let nombreVisitante = await Equipo.findOne({ where: { nombre: nombreV }}).then(e => e ? e.id_equipo : null);
         
         let partido = await Partido.findOne(
             { 
                 where: {
-                    fecha: fecha,
-                    id_equipo_local: nombreLocal,
-                    id_equipo_visitante: nombreVisitante
+                    [Op.and]: [
+                        Sequelize.where(Sequelize.fn('DATE', Sequelize.col('fecha')), '=', match.fecha.split(' ')[0]),
+                        { id_estadio: nombreEstadio },
+                        { id_equipo_local: nombreLocal },
+                        { id_equipo_visitante: nombreVisitante }
+                    ]
                 }
             });
             return partido ? partido.id_partido : null;
