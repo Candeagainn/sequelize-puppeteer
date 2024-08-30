@@ -126,13 +126,31 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
 
     async function insertGoalData (idPartido, minuto, idEquipo, idJugador, idJugadorAsistente) {
         try {
+            let [nombreInicialJugador, apellidoJugador] = idJugador.split(' ');
+            let inicialJugador = nombreInicialJugador[0];
+
+            let [nombreInicialJAsistente, apellidoJAsistente] = idJugadorAsistente.split(' ');
+            let inicialJAsistente = nombreInicialJAsistente[0];
+
             let equipo = await Equipo.findOne({ where: { nombre: idEquipo }});
             let equipoId = equipo ? equipo.id_equipo : null;
     
-            let jugador = await Jugador.findOne({ where: { nombre: idJugador }});
+            
+            let jugador = await Jugador.findOne({ 
+                where: { 
+                    apellido: apellidoJugador, 
+                    nombre: { 
+                        [Op.like]: `${inicialJugador}%` } 
+                    }});
             let jugadorId = jugador ? jugador.id_jugador : null;
     
-            let jugadorAsistente = await Jugador.findOne({ where: { nombre: idJugadorAsistente }});
+
+            let jugadorAsistente = await Jugador.findOne({ 
+                where: { 
+                    apellido: apellidoJugador, 
+                    nombre: { 
+                        [Op.like]: `${inicialJugador}%` } 
+                    }});
             let jugadorAsistenteId = jugadorAsistente ? jugadorAsistente.id_jugador : null;
     
             // Verifica si los IDs fueron encontrados
