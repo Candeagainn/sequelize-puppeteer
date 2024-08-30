@@ -1,3 +1,4 @@
+import { Sequelize, Op } from 'sequelize';
 import { Entrenador, Equipo, Jugador, Estadio, Partido, Tarjeta, Gol } from "./database.js";
 
 async function insertCoachData(nombre, apellido, fechaNacimiento, nacionalidad) {
@@ -114,8 +115,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             { 
                 where: {
                     [Op.and]: [
-                        Sequelize.where(Sequelize.fn('DATE', Sequelize.col('fecha')), '=', match.fecha.split(' ')[0]),
-                        { id_estadio: nombreEstadio },
+                        Sequelize.where(Sequelize.fn('DATE', Sequelize.col('fecha')), fecha),
                         { id_equipo_local: nombreLocal },
                         { id_equipo_visitante: nombreVisitante }
                     ]
@@ -124,23 +124,39 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             return partido ? partido.id_partido : null;
     }
 
-    async function insertGoalData (minuto, idJugador, idPartido, idEquipo, idJugadorAsistente) {
-        let equipo = await Equipo.findOne({ where: { nombre: idEquipo }}).then((e)=> equipo = e.id_equipo)
-        let jugador = await Jugador.findOne({where: {nombre: idJugador}}).then((e) => jugador = e.id_jugador)
-        let jugadorAsistente = await Jugador.findOne({where: {nombre: idJugadorAsistente}}).then((e) => jugadorAsistente = e.id_jugador)
+    async function insertGoalData (idPartido, minuto, idEquipo, idJugador, idJugadorAsistente) {
         try {
+            let equipo = await Equipo.findOne({ where: { nombre: idEquipo }});
+            let equipoId = equipo ? equipo.id_equipo : null;
+    
+            let jugador = await Jugador.findOne({ where: { nombre: idJugador }});
+            let jugadorId = jugador ? jugador.id_jugador : null;
+    
+            let jugadorAsistente = await Jugador.findOne({ where: { nombre: idJugadorAsistente }});
+            let jugadorAsistenteId = jugadorAsistente ? jugadorAsistente.id_jugador : null;
+    
+            // Verifica si los IDs fueron encontrados
+            if (!equipoId || !jugadorId || !jugadorAsistenteId) {
+                console.log('No se encontraron los IDs necesarios para insertar el gol.' + equipoId + jugadorId + jugadorAsistenteId);
+                return;
+            }
+    
             const [goal, created] = await Gol.findOrCreate({
                 where: { 
                     minuto: minuto,
-                    id_jugador: idJugador,
+                    id_jugador: jugadorId,
                     id_partido: idPartido,
-                    id_equipo: idTeam,
-                    id_jugador_asistente: idJugadorAsistente }
+                    id_equipo: equipoId,
+                    id_jugador_asistente: jugadorAsistenteId 
+                }
             });
-                  if (created) {
+    
+            if (created) {
                 console.log('Se insertó el registro del gol', goal.toJSON());
-                  }
-            } catch (error) {
+            } else {
+                console.log('El gol ya existe en la base de datos.');
+            }
+        } catch (error) {
             console.log('No se pudo insertar el registro del gol', error);
         }
         // id_gol INT PRIMARY KEY AUTO_INCREMENT,

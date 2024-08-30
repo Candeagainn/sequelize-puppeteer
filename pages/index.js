@@ -73,10 +73,10 @@ async function main() {
                 if (partidoId) {
                     for (const goal of match.goals) {
                         await insertGoalData(
-                            goal.minGol,
-                            goal.scorer,
                             partidoId,
+                            goal.minGol,
                             match.nombreLocal,
+                            goal.scorer,
                             goal.assist_scorer
                         );
                     }
