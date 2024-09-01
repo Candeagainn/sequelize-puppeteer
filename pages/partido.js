@@ -155,37 +155,6 @@ class PartidoScraper extends BaseScraper {
         }); return matchInfo;
     }
 
-    // async getGoalsInfo() {
-    //     const events = await this.page.evaluate(() => {
-    //         const teamName = 'Belgrano'
-    //         const matchEvents = []
-
-    //         let teamLocal = document.querySelector('.container.left > .team-title').innerText;
-
-    //         const goalElements = teamName == teamLocal.innerText
-    //             ? document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
-    //             : document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
-
-    //         try {
-    //             goalElements.forEach(element => {
-    //                 const min = (parseInt(element.closest('span').querySelector('.minute').innerText))
-    //                 const scorer = element.innerText
-    //                 const assist_scorer = element.querySelector('.assist').innerText
-    //                 // For the id_equipo we will use an element from another method in the class
-    //                 matchEvents.push({
-    //                     min,
-    //                     scorer,
-    //                     assist_scorer
-    //                 })
-    //             })
-
-    //         } catch (error) {
-    //             console.log('No se encontró info de los goles')
-    //         }
-    //         return matchEvents;
-    //     });
-    //     return events;
-    // }
 
 
     async scrapeAndSaveMatches(Url) {
@@ -200,7 +169,7 @@ class PartidoScraper extends BaseScraper {
                 console.log('La página del partido no pudo ser cargada', error)
             }
         }
-        await this.close();
+
         return matchesArray;
     }
 

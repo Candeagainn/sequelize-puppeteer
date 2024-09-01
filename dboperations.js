@@ -96,7 +96,9 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 tipo_competicion: competicion
             },
             defaults: { id_estadio: idEstadio, id_equipo_local: idLocal, id_equipo_visitante: idVisitante, score_local: localScore, score_visitante: visitanteScore }
-        }); if (created) {
+        }); 
+        
+        if (created) {
             console.log('Se insertó el registro del partido', partido.toJSON());
         } else {
             console.log('El registro del partido ya existe');
@@ -147,9 +149,9 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
 
             let jugadorAsistente = await Jugador.findOne({ 
                 where: { 
-                    apellido: apellidoJugador, 
+                    apellido: apellidoJAsistente, 
                     nombre: { 
-                        [Op.like]: `${inicialJugador}%` } 
+                        [Op.like]: `${inicialJAsistente}%` } 
                     }});
             let jugadorAsistenteId = jugadorAsistente ? jugadorAsistente.id_jugador : null;
     
