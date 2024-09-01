@@ -65,24 +65,24 @@ async function main() {
                 match.visitanteScore, 
                 match.competicion);
             
-    //         let partidoId = await getMatchId(
-    //             match.fecha,
-    //             match.nombreLocal,
-    //             match.nombreVisitante);
+            let partidoId = await getMatchId(
+                match.fecha,
+                match.nombreLocal,
+                match.nombreVisitante);
 
-    //             if (partidoId) {
-    //                 for (const goal of match.goals) {
-    //                     await insertGoalData(
-    //                         partidoId,
-    //                         goal.minGol,
-    //                         match.nombreLocal,
-    //                         goal.scorer,
-    //                         goal.assist_scorer
-    //                     );
-    //                 }
-    //             } else {
-    //                 console.log('No se encontró el ID del partido');
-    //             }
+                if (partidoId) {
+                    for (const goal of match.goals) {
+                        await insertGoalData(
+                            partidoId,
+                            goal.minGol,
+                            match.nombreLocal,
+                            goal.scorer,
+                            goal.assist_scorer
+                        );
+                    }
+                } else {
+                    console.log('No se encontró el ID del partido');
+                }
          }
     
       }
