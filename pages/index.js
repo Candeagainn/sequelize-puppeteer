@@ -3,7 +3,7 @@ import JugadorScraper from "./jugador.js";
 import EntrenadorScraper from "./entrenador.js";
 import EquipoScraper from "./equipo.js";
 import PartidoScraper from "./partido.js";
-import { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId, insertGoalData } from "../dboperations.js";
+import { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId, insertGoalData, insertCardData} from "../dboperations.js";
 
 async function main() {
 
@@ -56,14 +56,14 @@ async function main() {
     console.log(matches)
     if (matches) {
         for (const match of matches) {
-            await insertMatchData(
-                match.fecha,
-                match.nombreEstadio,
-                match.nombreLocal,
-                match.nombreVisitante, 
-                match.localScore, 
-                match.visitanteScore, 
-                match.competicion);
+            // await insertMatchData(
+            //     match.fecha,
+            //     match.nombreEstadio,
+            //     match.nombreLocal,
+            //     match.nombreVisitante, 
+            //     match.localScore, 
+            //     match.visitanteScore, 
+            //     match.competicion);
             
             let partidoId = await getMatchId(
                 match.fecha,
@@ -80,6 +80,15 @@ async function main() {
                             goal.assist_scorer
                         );
                     }
+                    // for (const card of match.cards) {
+                    //     await insertCardData(
+                    //         partidoId,
+                    //         card.minute,
+                    //         match.nombreLocal,
+                    //         card.playerName,
+                    //         card.cardType
+                    //     )
+                    // }
                 } else {
                     console.log('No se encontró el ID del partido');
                 }

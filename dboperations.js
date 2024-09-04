@@ -163,10 +163,10 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     
             const [goal, created] = await Gol.findOrCreate({
                 where: { 
-                    minuto: minuto,
-                    id_jugador: jugadorId,
                     id_partido: idPartido,
+                    minuto: minuto,
                     id_equipo: equipoId,
+                    id_jugador: jugadorId,
                     id_jugador_asistente: jugadorAsistenteId 
                 }
             });
@@ -179,12 +179,50 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
         } catch (error) {
             console.log('No se pudo insertar el registro del gol', error);
         }
-        // id_gol INT PRIMARY KEY AUTO_INCREMENT,
-            // minuto INT NOT NULL,
-            // id_jugador INT NOT NULL,
-            // id_partido INT NOT NULL,
-            // id_equipo INT NOT NULL,
-            // id_jugador_asistente INT NOT NULL,
     }
 
-export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId, insertGoalData}
+        async function insertCardData (idPartido, minuto, idEquipo, idJugador, tipoTarjeta) {
+            try{
+                let [nombreInicialJugador, apellidoJugador] = idJugador.split(' ');
+                let inicialJugador = nombreInicialJugador[0];
+    
+                let equipo = await Equipo.findOne({ where: { nombre: idEquipo }});
+                let equipoId = equipo ? equipo.id_equipo : null;
+        
+                
+                let jugador = await Jugador.findOne({ 
+                    where: { 
+                        apellido: apellidoJugador, 
+                        nombre: { 
+                            [Op.like]: `${inicialJugador}%` } 
+                        }});
+                let jugadorId = jugador ? jugador.id_jugador : null;
+        
+                // Verifica si los IDs fueron encontrados
+                if (!equipoId || !jugadorId) {
+                    console.log('No se encontraron los IDs necesarios para insertar la tarjeta.' + equipoId + jugadorId);
+                    return;
+                }
+        
+                const [card, created] = await Tarjeta.findOrCreate({
+                    where: { 
+                        minuto: minuto,
+                        id_jugador: jugadorId,
+                        id_partido: idPartido,
+                        id_equipo: equipoId,
+                        tipo_tarjeta: tipoTarjeta 
+                    }
+                });
+        
+                if (created) {
+                    console.log('Se insertó el registro de la tarjeta', card.toJSON());
+                } else {
+                    console.log('La tarjeta ya existe en la base de datos.');
+                }
+            } catch(error) {
+                console.log('No se pudo insertar el registro de la tarjeta', error);
+
+            }
+        }
+
+export { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, insertMatchData, getMatchId, insertGoalData, insertCardData}

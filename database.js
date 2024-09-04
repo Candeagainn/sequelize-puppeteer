@@ -211,7 +211,7 @@ const Entrenador = sequelize.define('entrenador', {
             indexes: [
                 {
                     unique: true,
-                    fields: ['fecha', 'id_estadio', 'id_equipo_local', 'id_equipo_visitante']
+                    fields: ['fecha', 'id_equipo_local', 'id_equipo_visitante']
                 }
             ]
         });
@@ -231,7 +231,7 @@ const Entrenador = sequelize.define('entrenador', {
                 autoIncrement: true
             },
             tipo_tarjeta: {
-                type: Sequelize.ENUM('amarilla', 'roja'),
+                type: Sequelize.STRING,
                 allowNull: false
             },
             minuto: {

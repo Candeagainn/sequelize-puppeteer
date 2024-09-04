@@ -94,7 +94,7 @@ class PartidoScraper extends BaseScraper {
             let cards = [];
             let rows = nombreLocal == 'CA Belgrano'
                 ? document.querySelectorAll('.container.left .playerstats >tbody > tr')
-                : document.querySelectorAll('.container.right .playerstats >tbody > tr ')
+                : document.querySelectorAll('.container.right .playerstats >tbody > tr')
 
                 console.log(`Encontradas ${rows.length} filas`); // Depuración: Número de filas encontradas
 
@@ -116,12 +116,12 @@ class PartidoScraper extends BaseScraper {
                     if (cardElement) {
                         let cardType = ''
                         let minute = ''
-                        if (cardElement.querySelector('img[src="/media/v2.9.3/img/events/YC.png"]')) {
-                            cardType = 'Yellow';
-                        } else if (cardElement.querySelector('img[src="/media/v2.9.3/img/events/Y2C.png"]')) {
-                            cardType = 'Second Yellow';
-                        } else if (cardElement.querySelector('img[src="/media/v2.9.3/img/events/RC.png"]')) {
-                            cardType = 'Red';
+                        if (cardElement.querySelector('img[src="/media/v2.9.5/img/events/YC.png"]')) {
+                            cardType = 'amarilla';
+                        } else if (cardElement.querySelector('img[src="/media/v2.9.5/img/events/Y2C.png"]')) {
+                            cardType = '2amarilla';
+                        } else if (cardElement.querySelector('img[src="/media/v2.9.5/img/events/RC.png"]')) {
+                            cardType = 'roja';
                         }
                         if (cardType) {
                             console.log(`Tarjeta encontrada: ${cardType}, Minuto: ${minute}`);
@@ -169,7 +169,7 @@ class PartidoScraper extends BaseScraper {
                 console.log('La página del partido no pudo ser cargada', error)
             }
         }
-
+        await this.close();
         return matchesArray;
     }
 
