@@ -71,24 +71,24 @@ async function main() {
                 match.nombreVisitante);
 
                 if (partidoId) {
-                    for (const goal of match.goals) {
-                        await insertGoalData(
-                            partidoId,
-                            goal.minGol,
-                            match.nombreLocal,
-                            goal.scorer,
-                            goal.assist_scorer
-                        );
-                    }
-                    // for (const card of match.cards) {
-                    //     await insertCardData(
+                    // for (const goal of match.goals) {
+                    //     await insertGoalData(
                     //         partidoId,
-                    //         card.minute,
+                    //         goal.minGol,
                     //         match.nombreLocal,
-                    //         card.playerName,
-                    //         card.cardType
-                    //     )
+                    //         goal.scorer,
+                    //         goal.assist_scorer
+                    //     );
                     // }
+                    for (const card of match.cards) {
+                        await insertCardData(
+                            partidoId,
+                            card.minute,
+                            match.nombreLocal,
+                            card.playerName,
+                            card.cardType
+                        )
+                    }
                 } else {
                     console.log('No se encontró el ID del partido');
                 }

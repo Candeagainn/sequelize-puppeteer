@@ -137,8 +137,14 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             let [nombreInicialJugador, apellidoJugador] = idJugador.split(' ');
             let inicialJugador = nombreInicialJugador[0];
 
+            let inicialJAsistente = ('');
             let [nombreInicialJAsistente, apellidoJAsistente] = idJugadorAsistente.split(' ');
-            let inicialJAsistente = nombreInicialJAsistente[0];
+            if (!idJugadorAsistente) {
+                inicialJAsistente = null;
+                apellidoJAsistente = null;
+            } else {
+             inicialJAsistente = nombreInicialJAsistente[0];
+            }
                 /////////////////////////////////////////////
 
             let equipo = await Equipo.findOne({ where: { nombre: idEquipo }});
@@ -154,7 +160,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             let jugadorId = jugador ? jugador.id_jugador : null;
     
 
-            let jugadorAsistente = await Jugador.findOne({ 
+            let jugadorAsistente = await Jugador.findOne({
                 where: { 
                     apellido: apellidoJAsistente, 
                     nombre: { 
