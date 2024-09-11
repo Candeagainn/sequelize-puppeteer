@@ -304,7 +304,7 @@ const Entrenador = sequelize.define('entrenador', {
             },
             id_jugador_asistente: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references:{
                     model: Jugador,
                     key: 'id_jugador'

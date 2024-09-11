@@ -127,12 +127,19 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     }
 
     async function insertGoalData (idPartido, minuto, idEquipo, idJugador, idJugadorAsistente) {
+
+        if (!idJugador || !idJugadorAsistente) {
+            console.log('Faltan datos del jugador o asistente para insertar el gol' + idJugador + idJugadorAsistente);
+        }
+            /////////////////////////////////////////////
         try {
+
             let [nombreInicialJugador, apellidoJugador] = idJugador.split(' ');
             let inicialJugador = nombreInicialJugador[0];
 
             let [nombreInicialJAsistente, apellidoJAsistente] = idJugadorAsistente.split(' ');
             let inicialJAsistente = nombreInicialJAsistente[0];
+                /////////////////////////////////////////////
 
             let equipo = await Equipo.findOne({ where: { nombre: idEquipo }});
             let equipoId = equipo ? equipo.id_equipo : null;
@@ -157,10 +164,9 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     
             // Verifica si los IDs fueron encontrados
             if (!equipoId || !jugadorId || !jugadorAsistenteId) {
-                console.log('No se encontraron los IDs necesarios para insertar el gol.' + equipoId + jugadorId + jugadorAsistenteId);
-                return;
+                console.log('No se encontraron los IDs necesarios para insertar el gol.');
+                console.log('Detalles:', { equipoId, jugadorId, jugadorAsistenteId });
             }
-    
             const [goal, created] = await Gol.findOrCreate({
                 where: { 
                     id_partido: idPartido,

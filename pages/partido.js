@@ -80,7 +80,7 @@ class PartidoScraper extends BaseScraper {
                     scorer = element.innerText
                 } catch (error) { console.log('No se encontró info del goleador') }
                 try {
-                    assist_scorer = element.querySelector('.assist').innerText
+                    assist_scorer = element.querySelector('.assist > a').innerText
                 } catch (error) { console.log('No se encontró info del asistente del gol') }
 
                 goals.push({
