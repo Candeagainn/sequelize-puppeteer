@@ -219,7 +219,7 @@ const Entrenador = sequelize.define('entrenador', {
 
         const Tarjeta = sequelize.define('tarjeta', {
             // id_tarjeta INT PRIMARY KEY AUTO_INCREMENT,
-            // tipo_tarjeta ENUM('amarilla', 'roja') NOT NULL,
+            // tipo_tarjeta VARCHAR(50), NOT NULL,
             // minuto INT NOT NULL,
             // id_jugador INT NOT NULL,
             // id_partido INT NOT NULL,
@@ -244,6 +244,14 @@ const Entrenador = sequelize.define('entrenador', {
                 references:{
                     model: Jugador,
                     key: 'id_jugador'
+                }
+            },
+            id_equipo: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                references:{
+                    model: Equipo,
+                    key: 'id_equipo'
                 }
             },
             id_partido: {
