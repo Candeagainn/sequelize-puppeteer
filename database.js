@@ -219,7 +219,7 @@ const Entrenador = sequelize.define('entrenador', {
 
         const Tarjeta = sequelize.define('tarjeta', {
             // id_tarjeta INT PRIMARY KEY AUTO_INCREMENT,
-            // tipo_tarjeta VARCHAR(50), NOT NULL,
+            // tipo_tarjeta VARCHAR(50) NOT NULL,
             // minuto INT NOT NULL,
             // id_jugador INT NOT NULL,
             // id_partido INT NOT NULL,
@@ -269,6 +269,7 @@ const Entrenador = sequelize.define('entrenador', {
         const Gol = sequelize.define('gol',{
             // id_gol INT PRIMARY KEY AUTO_INCREMENT,
             // minuto INT NOT NULL,
+            // tiempo VARCHAR(50) NOT NULL,
             // id_jugador INT NOT NULL,
             // id_partido INT NOT NULL,
             // id_equipo INT NOT NULL,
@@ -284,6 +285,10 @@ const Entrenador = sequelize.define('entrenador', {
             },
             minuto: {
                 type: Sequelize.INTEGER,
+                allowNull: false
+            },
+            tiempo: {
+                type: Sequelize.STRING,
                 allowNull: false
             },
             id_jugador: {

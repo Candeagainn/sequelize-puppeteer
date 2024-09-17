@@ -1,3 +1,4 @@
+import { INTEGER } from "sequelize";
 import BaseScraper from "../scraper.js";
 
 class PartidoScraper extends BaseScraper {
@@ -61,6 +62,8 @@ class PartidoScraper extends BaseScraper {
 
             let competicion = document.querySelector('.details > a:nth-child(3)').innerText;
 
+            let 
+
 
             let goals = [];
             let goalElements = nombreLocal == 'CA Belgrano'
@@ -68,13 +71,22 @@ class PartidoScraper extends BaseScraper {
                 : document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
 
             let minGol = '';
+            let tiempo = ''
             let scorer = '';
             let assist_scorer = '';
 
             goalElements.forEach(element => {
 
                 try {
-                    minGol = (parseInt(element.closest('span').querySelector('.minute').innerText))
+                    minTexto = (element.closest('span').querySelector('.minute').innerText)
+                    // if (minTexto.includes('+')) {
+                    //     const [base, extra] = minTexto.split('+');
+                    //     minGol = parseInt(base) + parseInt(extra);
+                    //     tiempo = parseInt(base) == 45 ? 'PT' : 'ST';
+                    // } else {
+                    //     minGol = parseInt(minTexto);
+                    //     tiempo = minGol <= 45 ? 'PT' : 'ST';
+                    // }
                 } catch (error) { console.log('No se encontró info del minuto del gol') }
                 try {
                     scorer = element.innerText
@@ -84,7 +96,7 @@ class PartidoScraper extends BaseScraper {
                 } catch (error) { console.log('No se encontró info del asistente del gol') }
 
                 goals.push({
-                    minGol, scorer, assist_scorer
+                    minGol, tiempo, scorer, assist_scorer
                 })
             })
         
@@ -116,11 +128,11 @@ class PartidoScraper extends BaseScraper {
                     if (cardElement) {
                         let cardType = ''
                         let minute = ''
-                        if (cardElement.querySelector('img[src="/media/v2.9.5/img/events/YC.png"]')) {
+                        if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/YC.png"]')) {
                             cardType = 'amarilla';
-                        } else if (cardElement.querySelector('img[src="/media/v2.9.5/img/events/Y2C.png"]')) {
+                        } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/Y2C.png"]')) {
                             cardType = '2amarilla';
-                        } else if (cardElement.querySelector('img[src="/media/v2.9.5/img/events/RC.png"]')) {
+                        } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/RC.png"]')) {
                             cardType = 'roja';
                         }
                         if (cardType) {
@@ -130,11 +142,11 @@ class PartidoScraper extends BaseScraper {
                             cards.push({
                                 playerName,
                                 cardType,
-                                minute: parseInt(minute, 10) || minute 
+                                minute: parseInt(minute, 10) || minute
                             });
                         }
                     } else {
-                        console.log('No se encontró el elemento .bookings span');
+                        console.log('...No se encontró el elemento .bookings span');
                     }
                     
                 })

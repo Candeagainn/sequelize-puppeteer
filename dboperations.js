@@ -229,7 +229,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 if (created) {
                     console.log('Se insertó el registro de la tarjeta', card.toJSON());
                 } else {
-                    console.log('La tarjeta ya existe en la base de datos.');
+                    console.log('------------///////////// La tarjeta ya existe en la base de datos.');
                 }
             } catch(error) {
                 console.log('No se pudo insertar el registro de la tarjeta', error);

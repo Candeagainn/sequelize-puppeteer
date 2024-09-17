@@ -54,47 +54,47 @@ async function main() {
     const matchScraper = new PartidoScraper();
     const matches = await matchScraper.scrapeAndSaveMatches('https://el.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/matches/');
     console.log(matches)
-    if (matches) {
-        for (const match of matches) {
-            // await insertMatchData(
-            //     match.fecha,
-            //     match.nombreEstadio,
-            //     match.nombreLocal,
-            //     match.nombreVisitante, 
-            //     match.localScore, 
-            //     match.visitanteScore, 
-            //     match.competicion);
+    // if (matches) {
+    //     for (const match of matches) {
+    //         // await insertMatchData(
+    //         //     match.fecha,
+    //         //     match.nombreEstadio,
+    //         //     match.nombreLocal,
+    //         //     match.nombreVisitante, 
+    //         //     match.localScore, 
+    //         //     match.visitanteScore, 
+    //         //     match.competicion);
             
-            let partidoId = await getMatchId(
-                match.fecha,
-                match.nombreLocal,
-                match.nombreVisitante);
+    //         let partidoId = await getMatchId(
+    //             match.fecha,
+    //             match.nombreLocal,
+    //             match.nombreVisitante);
 
-                if (partidoId) {
-                    // for (const goal of match.goals) {
-                    //     await insertGoalData(
-                    //         partidoId,
-                    //         goal.minGol,
-                    //         match.nombreLocal,
-                    //         goal.scorer,
-                    //         goal.assist_scorer
-                    //     );
-                    // }
-                    for (const card of match.cards) {
-                        await insertCardData(
-                            partidoId,
-                            card.minute,
-                            match.nombreLocal,
-                            card.playerName,
-                            card.cardType
-                        )
-                    }
-                } else {
-                    console.log('No se encontró el ID del partido');
-                }
-         }
+    //             if (partidoId) {
+    //                 for (const goal of match.goals) {
+    //                     await insertGoalData(
+    //                         partidoId,
+    //                         goal.minGol,
+    //                         match.nombreLocal,
+    //                         goal.scorer,
+    //                         goal.assist_scorer
+    //                     );
+    //                 }
+    //                 for (const card of match.cards) {
+    //                     await insertCardData(
+    //                         partidoId,
+    //                         card.minute,
+    //                         match.nombreLocal,
+    //                         card.playerName,
+    //                         card.cardType
+    //                     )
+    //                 }
+    //             } else {
+    //                 console.log('No se encontró el ID del partido');
+    //             }
+    //      }
     
-      }
+    //   }
 }
 
 main();
