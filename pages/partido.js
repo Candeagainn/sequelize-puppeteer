@@ -62,13 +62,13 @@ class PartidoScraper extends BaseScraper {
 
             let competicion = document.querySelector('.details > a:nth-child(3)').innerText;
 
-            let 
-
 
             let goals = [];
             let goalElements = nombreLocal == 'CA Belgrano'
                 ? document.querySelectorAll('.scorer-info > li > span:nth-child(1) > a')
                 : document.querySelectorAll('.scorer-info > li > span:nth-child(3) > a')
+            
+            let nombreEquipo = nombreLocal == 'CA Belgrano' ? nombreLocal : nombreVisitante;
 
             let minGol = '';
             let tiempo = ''
@@ -79,14 +79,14 @@ class PartidoScraper extends BaseScraper {
 
                 try {
                     minTexto = (element.closest('span').querySelector('.minute').innerText)
-                    // if (minTexto.includes('+')) {
-                    //     const [base, extra] = minTexto.split('+');
-                    //     minGol = parseInt(base) + parseInt(extra);
-                    //     tiempo = parseInt(base) == 45 ? 'PT' : 'ST';
-                    // } else {
-                    //     minGol = parseInt(minTexto);
-                    //     tiempo = minGol <= 45 ? 'PT' : 'ST';
-                    // }
+                    if (minTexto.includes('+')) {
+                        const [base, extra] = minTexto.split('+');
+                        minGol = parseInt(base) + parseInt(extra);
+                        tiempo = parseInt(base) == 45 ? 'PT' : 'ST';
+                    } else {
+                        minGol = parseInt(minTexto);
+                        tiempo = minGol <= 45 ? 'PT' : 'ST';
+                    }
                 } catch (error) { console.log('No se encontró info del minuto del gol') }
                 try {
                     scorer = element.innerText
@@ -96,10 +96,10 @@ class PartidoScraper extends BaseScraper {
                 } catch (error) { console.log('No se encontró info del asistente del gol') }
 
                 goals.push({
-                    minGol, tiempo, scorer, assist_scorer
+                    minGol, tiempo, scorer, assist_scorer, nombreEquipo
                 })
             })
-        
+
 
 
 
@@ -108,10 +108,12 @@ class PartidoScraper extends BaseScraper {
                 ? document.querySelectorAll('.container.left .playerstats >tbody > tr')
                 : document.querySelectorAll('.container.right .playerstats >tbody > tr')
 
-                console.log(`Encontradas ${rows.length} filas`); // Depuración: Número de filas encontradas
+            nombreEquipo = nombreLocal == 'CA Belgrano' ? nombreLocal : nombreVisitante;
+
+            console.log(`Encontradas ${rows.length} filas`); // Depuración: Número de filas encontradas
 
 
-                let playerName = '';
+            let playerName = '';
 
             rows.forEach(row => {
                 let playerElement = row.querySelector('.player > a');
@@ -123,33 +125,45 @@ class PartidoScraper extends BaseScraper {
                     console.log('No se encontró el elemento .player > a');
                 }
 
-                    let cardElement = row.querySelector('.bookings > span')
+                let cardElement = row.querySelector('.bookings > span')
 
-                    if (cardElement) {
-                        let cardType = ''
-                        let minute = ''
-                        if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/YC.png"]')) {
-                            cardType = 'amarilla';
-                        } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/Y2C.png"]')) {
-                            cardType = '2amarilla';
-                        } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/RC.png"]')) {
-                            cardType = 'roja';
-                        }
-                        if (cardType) {
-                            console.log(`Tarjeta encontrada: ${cardType}, Minuto: ${minute}`);
+                if (cardElement) {
+                    let cardType = ''
+                    let minute = ''
 
-                            minute = cardElement.textContent.trim(); 
-                            cards.push({
-                                playerName,
-                                cardType,
-                                minute: parseInt(minute, 10) || minute
-                            });
-                        }
-                    } else {
-                        console.log('...No se encontró el elemento .bookings span');
+                    if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/YC.png"]')) {
+                        cardType = 'amarilla';
+                    } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/Y2C.png"]')) {
+                        cardType = '2amarilla';
+                    } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/RC.png"]')) {
+                        cardType = 'roja';
                     }
-                    
-                })
+                    if (cardType) {
+                        minute = cardElement.textContent.trim();
+                        
+                        if (minute.includes('+')) {
+                            const [base, extra] = minute.split('+');
+                            minTarjeta = parseInt(base) + parseInt(extra);
+                            tiempo = parseInt(base) == 45 ? 'PT' : 'ST';
+                        } else {
+                            minTarjeta = parseInt(minute);
+                            tiempo = minTarjeta <= 45 ? 'PT' : 'ST';
+                        }
+
+
+                        cards.push({
+                            playerName,
+                            cardType,
+                            minTarjeta,
+                            tiempo,
+                            nombreEquipo
+                        });
+                    }
+                } else {
+                    console.log('...No se encontró el elemento .bookings span');
+                }
+
+            })
 
 
             return {

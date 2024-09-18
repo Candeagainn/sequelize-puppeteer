@@ -126,10 +126,10 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             return partido ? partido.id_partido : null;
     }
 
-    async function insertGoalData (idPartido, minuto, idEquipo, idJugador, idJugadorAsistente) {
+    async function insertGoalData (idPartido, minuto, tiempo, idEquipo, idJugador, idJugadorAsistente) {
 
         if (!idJugador || !idJugadorAsistente) {
-            console.log('Faltan datos del jugador o asistente para insertar el gol' + idJugador + idJugadorAsistente);
+            console.log('--------//////////// Faltan datos del jugador o asistente para insertar el gol' + idJugador + idJugadorAsistente);
         }
             /////////////////////////////////////////////
         try {
@@ -177,6 +177,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 where: { 
                     id_partido: idPartido,
                     minuto: minuto,
+                    tiempo: tiempo,
                     id_equipo: equipoId,
                     id_jugador: jugadorId,
                     id_jugador_asistente: jugadorAsistenteId 
@@ -189,11 +190,11 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 console.log('El gol ya existe en la base de datos.');
             }
         } catch (error) {
-            console.log('No se pudo insertar el registro del gol', error);
+            console.log('-----////////// No se pudo insertar el registro del gol', error);
         }
     }
 
-        async function insertCardData (idPartido, minuto, idEquipo, idJugador, tipoTarjeta) {
+        async function insertCardData (idPartido, minuto, tiempo, idEquipo, idJugador, tipoTarjeta) {
             try{
                 let [nombreInicialJugador, apellidoJugador] = idJugador.split(' ');
                 let inicialJugador = nombreInicialJugador[0];
@@ -208,6 +209,21 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                         nombre: { 
                             [Op.like]: `${inicialJugador}%` } 
                         }});
+
+
+                        if (!jugador) {
+                            jugador = await Jugador.findOne({
+                                where: {
+                                    apellido: apellidoJugador,
+                                    nombre: {
+                                        [Op.like]: `%${inicialJugador}%`
+                                    }
+                                }
+                            });
+                        }
+
+
+
                 let jugadorId = jugador ? jugador.id_jugador : null;
         
                 // Verifica si los IDs fueron encontrados
@@ -219,6 +235,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 const [card, created] = await Tarjeta.findOrCreate({
                     where: { 
                         minuto: minuto,
+                        tiempo: tiempo,
                         id_jugador: jugadorId,
                         id_partido: idPartido,
                         id_equipo: equipoId,
