@@ -129,8 +129,8 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     async function insertGoalData (idPartido, minuto, tiempo, idEquipo, idJugador, idJugadorAsistente) {
 
         if (!idJugador || !idJugadorAsistente) {
-            console.log('--------//////////// Faltan datos del jugador o asistente para insertar el gol. GOLEADOR:' + idJugador );
-            console.log('--------//////////// Faltan datos del jugador o asistente para insertar el gol. ASISTENTE:' + idJugadorAsistente);
+            console.log('--------//////////// Faltan datos del autor del gol para insertar el gol. GOLEADOR:' + idJugador );
+            console.log('--------//////////// Faltan datos del asistente para insertar el gol. ASISTENTE:' + idJugadorAsistente);
         }
             /////////////////////////////////////////////
         try {
@@ -154,18 +154,25 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
             
             let jugador = await Jugador.findOne({ 
                 where: { 
-                    apellido: apellidoJugador, 
-                    nombre: { 
-                        [Op.like]: `${inicialJugador}%` } 
+                    apellido: {[Op.like]: `%${apellidoJugador}%`}, 
+                    nombre: {[Op.like]: `${inicialJugador}%`} 
                     }});
+
+                    if (!jugador) {
+                        jugador = await Jugador.findOne({
+                            where: { 
+                                apellido: {[Op.like]: `%${apellidoJugador}%`}, 
+                                nombre: {[Op.like]: ` ${inicialJugador}%`} 
+                                }});
+                    }
+                    
             let jugadorId = jugador ? jugador.id_jugador : null;
     
 
             let jugadorAsistente = await Jugador.findOne({
                 where: { 
-                    apellido: apellidoJAsistente, 
-                    nombre: { 
-                        [Op.like]: `${inicialJAsistente}%` } 
+                    apellido: {[Op.like]: `%${apellidoJAsistente}%`}, 
+                    nombre: {[Op.like]: `%${inicialJAsistente}%`} 
                     }});
             let jugadorAsistenteId = jugadorAsistente ? jugadorAsistente.id_jugador : null;
     
@@ -206,24 +213,18 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                 
                 let jugador = await Jugador.findOne({ 
                     where: { 
-                        apellido: apellidoJugador, 
-                        nombre: { 
-                            [Op.like]: `${inicialJugador}%` } 
+                        apellido: {[Op.like]: `%${apellidoJugador}%`}, 
+                        nombre: {[Op.like]: `${inicialJugador}%`} 
                         }});
 
 
                         if (!jugador) {
                             jugador = await Jugador.findOne({
-                                where: {
-                                    apellido: apellidoJugador,
-                                    nombre: {
-                                        [Op.like]: `% ${inicialJugador}%`
-                                    }
-                                }
-                            });
+                                where: { 
+                                    apellido: {[Op.like]: `%${apellidoJugador}%`}, 
+                                    nombre: {[Op.like]: ` ${inicialJugador}%`} 
+                                    }});
                         }
-
-
 
                 let jugadorId = jugador ? jugador.id_jugador : null;
         

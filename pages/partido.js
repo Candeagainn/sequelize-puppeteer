@@ -131,11 +131,11 @@ class PartidoScraper extends BaseScraper {
                     let cardType = ''
                     let minute = ''
 
-                    if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/YC.png"]')) {
+                    if (cardElement.querySelector('img[src*="YC.png"]')) {
                         cardType = 'amarilla';
-                    } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/Y2C.png"]')) {
+                    } else if (cardElement.querySelector('img[src*="2YC.png"]')) {
                         cardType = '2amarilla';
-                    } else if (cardElement.querySelector('img[src="/media/v2.9.6/img/events/RC.png"]')) {
+                    } else if (cardElement.querySelector('img[src*="RC.png"]')) {
                         cardType = 'roja';
                     }
                     if (cardType) {
