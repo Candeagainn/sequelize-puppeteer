@@ -129,7 +129,8 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
     async function insertGoalData (idPartido, minuto, tiempo, idEquipo, idJugador, idJugadorAsistente) {
 
         if (!idJugador || !idJugadorAsistente) {
-            console.log('--------//////////// Faltan datos del jugador o asistente para insertar el gol' + idJugador + idJugadorAsistente);
+            console.log('--------//////////// Faltan datos del jugador o asistente para insertar el gol. GOLEADOR:' + idJugador );
+            console.log('--------//////////// Faltan datos del jugador o asistente para insertar el gol. ASISTENTE:' + idJugadorAsistente);
         }
             /////////////////////////////////////////////
         try {
@@ -216,7 +217,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                                 where: {
                                     apellido: apellidoJugador,
                                     nombre: {
-                                        [Op.like]: `%${inicialJugador}%`
+                                        [Op.like]: `% ${inicialJugador}%`
                                     }
                                 }
                             });
