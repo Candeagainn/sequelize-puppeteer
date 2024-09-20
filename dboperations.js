@@ -162,10 +162,10 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                         jugador = await Jugador.findOne({
                             where: { 
                                 apellido: {[Op.like]: `%${apellidoJugador}%`}, 
-                                nombre: {[Op.like]: ` ${inicialJugador}%`} 
+                                nombre: {[Op.like]: `% ${inicialJugador}%`} 
                                 }});
                     }
-                    
+
             let jugadorId = jugador ? jugador.id_jugador : null;
     
 
@@ -174,6 +174,14 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                     apellido: {[Op.like]: `%${apellidoJAsistente}%`}, 
                     nombre: {[Op.like]: `%${inicialJAsistente}%`} 
                     }});
+
+                    if (!jugadorAsistente) {
+                        jugador = await Jugador.findOne({
+                            where: { 
+                                apellido: {[Op.like]: `%${apellidoJAsistente}%`}, 
+                                nombre: {[Op.like]: `% ${inicialJAsistente}%`} 
+                                }});
+                            }
             let jugadorAsistenteId = jugadorAsistente ? jugadorAsistente.id_jugador : null;
     
             // Verifica si los IDs fueron encontrados
@@ -222,7 +230,7 @@ async function insertMatchData(fecha, estadio, teamLocal, teamVisitante, localSc
                             jugador = await Jugador.findOne({
                                 where: { 
                                     apellido: {[Op.like]: `%${apellidoJugador}%`}, 
-                                    nombre: {[Op.like]: ` ${inicialJugador}%`} 
+                                    nombre: {[Op.like]: `% ${inicialJugador}%`} 
                                     }});
                         }
 
