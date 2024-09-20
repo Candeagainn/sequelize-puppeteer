@@ -125,19 +125,22 @@ class PartidoScraper extends BaseScraper {
                     console.log('No se encontró el elemento .player > a');
                 }
 
-                let cardElement = row.querySelector('.bookings > span')
+                let cardElements = row.querySelectorAll('.bookings > span')
 
+                cardElements.forEach(cardElement => {
                 if (cardElement) {
                     let cardType = ''
                     let minute = ''
 
                     if (cardElement.querySelector('img[src*="YC.png"]')) {
                         cardType = 'amarilla';
-                    } else if (cardElement.querySelector('img[src*="2YC.png"]')) {
+                    } else if (cardElement.querySelector('img[src*="Y2C.png"]')) {
                         cardType = '2amarilla';
                     } else if (cardElement.querySelector('img[src*="RC.png"]')) {
                         cardType = 'roja';
                     }
+
+                
                     if (cardType) {
                         minute = cardElement.textContent.trim();
                         
@@ -162,8 +165,8 @@ class PartidoScraper extends BaseScraper {
                 } else {
                     console.log('...No se encontró el elemento .bookings span');
                 }
-
-            })
+            });
+        });
 
 
             return {
