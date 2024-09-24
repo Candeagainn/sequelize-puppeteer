@@ -8,62 +8,62 @@ import { insertCoachData, insertTeamData, insertPlayerData, insertVenueData, ins
 async function main() {
 
 
-    // /// Obtención y guardado de datos de la tabla entrenador
-    //     const coachScraper = new EntrenadorScraper();
-    //     const coachInfo = await coachScraper.scrapeAndSaveCoach('https://int.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/squad/');
-    //     if (coachInfo) {
-    //         await insertCoachData(coachInfo.name, coachInfo.lastName, coachInfo.dateOfBirth, coachInfo.nationality);  
-    //     }  
+    /// Obtención y guardado de datos de la tabla entrenador
+        const coachScraper = new EntrenadorScraper();
+        const coachInfo = await coachScraper.scrapeAndSaveCoach('https://int.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/squad/');
+        if (coachInfo) {
+            await insertCoachData(coachInfo.name, coachInfo.lastName, coachInfo.dateOfBirth, coachInfo.nationality);  
+        }  
 
-    // /// Obtención y guardado de datos de la tabla equipo
-    //     const teamsSCraper = new EquipoScraper;
-    //     const teamLinks = await teamsSCraper.scrapeAndSaveTeams('https://int.soccerway.com/national/argentina/primera-division/2024/2nd-phase/r80132/tables/')
-    //     console.log(teamLinks); 
-    //         if (teamLinks) {
-    //             for (const team of teamLinks) {
-    //                 await insertTeamData(team.nombre, team.ciudad);
-    //             }
-    //         }
+    /// Obtención y guardado de datos de la tabla equipo
+        const teamsSCraper = new EquipoScraper;
+        const teamLinks = await teamsSCraper.scrapeAndSaveTeams('https://int.soccerway.com/national/argentina/primera-division/2024/2nd-phase/r80132/tables/')
+        console.log(teamLinks); 
+            if (teamLinks) {
+                for (const team of teamLinks) {
+                    await insertTeamData(team.nombre, team.ciudad);
+                }
+            }
 
 
-    // // Obtención y guardado de datos de la tabla jugador
-    // const playerScraper = new JugadorScraper();
-    // const playerDataArray = await playerScraper.scrapeAndSavePlayers('https://int.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/squad/')
-    // if (playerDataArray) {
-    //     for (const player of playerDataArray) {
-    //         await insertPlayerData(
-    //             player.playerInfo.name,
-    //             player.playerInfo.lastName,
-    //             player.playerInfo.dateOfBirth,
-    //             player.playerInfo.nationality,
-    //             player.playerInfo.position,
-    //             player.teamName);
-    //     }
-    // }
+    // Obtención y guardado de datos de la tabla jugador
+    const playerScraper = new JugadorScraper();
+    const playerDataArray = await playerScraper.scrapeAndSavePlayers('https://int.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/squad/')
+    if (playerDataArray) {
+        for (const player of playerDataArray) {
+            await insertPlayerData(
+                player.playerInfo.name,
+                player.playerInfo.lastName,
+                player.playerInfo.dateOfBirth,
+                player.playerInfo.nationality,
+                player.playerInfo.position,
+                player.teamName);
+        }
+    }
 
     // Obtención y guardado de datos de la tabla estadio
-    // const stadiumScraper = new EstadioScraper();
-    // const stadiums = await stadiumScraper.scrapeStadiums();
-    // if (stadiums) {
-    //     for (const stadium of stadiums) {
-    //         await insertVenueData (stadium.nombre, stadium.ciudad, stadium.capacidad);
-    //     }
-    // }
+    const stadiumScraper = new EstadioScraper();
+    const stadiums = await stadiumScraper.scrapeStadiums();
+    if (stadiums) {
+        for (const stadium of stadiums) {
+            await insertVenueData (stadium.nombre, stadium.ciudad, stadium.capacidad);
+        }
+    }
 
-    //Obtención y guardado de datos de la tabla partido
+    // Obtención y guardado de datos de la tabla partido
     const matchScraper = new PartidoScraper();
     const matches = await matchScraper.scrapeAndSaveMatches('https://el.soccerway.com/teams/argentina/ca-belgrano-de-cordoba/114/matches/');
     console.log(matches)
     if (matches) {
         for (const match of matches) {
-            // await insertMatchData(
-            //     match.fecha,
-            //     match.nombreEstadio,
-            //     match.nombreLocal,
-            //     match.nombreVisitante, 
-            //     match.localScore, 
-            //     match.visitanteScore, 
-            //     match.competicion);
+            await insertMatchData(
+                match.fecha,
+                match.nombreEstadio,
+                match.nombreLocal,
+                match.nombreVisitante, 
+                match.localScore, 
+                match.visitanteScore, 
+                match.competicion);
             
             let partidoId = await getMatchId(
                 match.fecha,
