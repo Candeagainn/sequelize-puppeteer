@@ -27,7 +27,17 @@ async function insertTeamData(nombre, ciudad) {
     }
 }
 
-
+async function markAllPlayersInactive(idEquipo) {
+    try {
+        await Jugador.update(
+            { activo: false },
+            { where: { id_equipo: idEquipo } }
+        );
+        console.log(`Todos los jugadores del equipo con ID ${idEquipo} han sido marcados como inactivos.`);
+    } catch (error) {
+        console.log('Error al marcar jugadores como inactivos:', error);
+    }
+}
 
 async function insertPlayerData(nombre, apellido, fechaNacimiento, nacionalidad, posicion, nombreEquipo) {
 
@@ -35,9 +45,13 @@ async function insertPlayerData(nombre, apellido, fechaNacimiento, nacionalidad,
         const buscarId = await Equipo.findOne({ where: { nombre: nombreEquipo } })
         const idEquipo = buscarId.id_equipo;
 
+         // Marca todos los jugadores como inactivos antes de insertar nuevos datos
+         await markAllPlayersInactive(idEquipo);
+         
+
         const [jugador, created]= await Jugador.findOrCreate({
             where: { nombre: nombre, apellido: apellido },
-            defaults: { fecha_nacimiento: fechaNacimiento, nacionalidad: nacionalidad, posicion: posicion, id_equipo: idEquipo }
+            defaults: { fecha_nacimiento: fechaNacimiento, nacionalidad: nacionalidad, posicion: posicion, id_equipo: idEquipo, activo: true }
 
         });
         if (created) {

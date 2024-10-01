@@ -119,6 +119,11 @@ const Entrenador = sequelize.define('entrenador', {
                     model: Equipo,
                     key: 'id_equipo'
                 }
+            },
+            activo: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: true // Establece el valor por defecto a true
             }
         });
         export {Jugador};
